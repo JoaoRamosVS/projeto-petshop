@@ -1,0 +1,79 @@
+@startuml
+
+' Layout da esquerda para a direita
+left to right direction
+
+' Definição dos Atores
+actor :Tutor: as Cliente
+actor :Atendente: as Atendente
+actor "Profissional\nde Serviço" as Profissional <<Veterinário/Tosador>>
+actor :Administrador: as Admin
+
+' Definição do Sistema
+rectangle "Sistema Integrado PetShop" {
+    ' -- Casos de Uso de Cadastro --
+    usecase (Gerenciar Cadastro e Pets) as (Cadastro)
+    
+    ' -- Casos de Uso de Compra --
+    usecase "Comprar Produtos Online\n(Retirada Presencial)" as (CompraOnline)
+    usecase (Processar Venda Física) as (VendaFisica)
+    
+    ' -- Casos de Uso de Agendamento --
+    usecase (Agendar Serviço) as (Agendamento)
+    usecase (Consultar Agenda) as (Agenda)
+    
+    ' -- Casos de Uso de Execução --
+    usecase "Executar Serviço Agendado" as (Execucao)
+    usecase "Atualizar Prontuário do Pet\n(Alergias, Obs.)" as (Prontuario)
+
+    ' -- Casos de Uso Administrativos --
+    usecase (Gerenciar Usuários) as (GerenciarUsuarios)
+    usecase "Gerenciar Serviços e Produtos" as (GerenciarCatalogo)
+    usecase "Gerar Relatórios Gerenciais" as (Relatorios)
+}
+
+' --- Relacionamentos dos Atores Operacionais ---
+
+' O Tutor (Cliente) pode se cadastrar e agendar online, além de comprar para retirada
+Cliente -- (Cadastro)
+Cliente -- (Agendamento)
+Cliente -- (CompraOnline)
+
+' O Atendente pode cadastrar clientes, agendar para eles e processar vendas na loja
+Atendente -- (Cadastro)
+Atendente -- (Agendamento)
+Atendente -- (VendaFisica)
+Atendente -- (Agenda)
+
+' O Profissional de Serviço executa o que foi agendado e atualiza os dados do pet
+Profissional -- (Execucao)
+Profissional -- (Agenda)
+
+' --- Relacionamentos do Administrador ---
+' O Administrador gerencia as entidades principais do sistema
+Admin -- (GerenciarUsuarios)
+Admin -- (GerenciarCatalogo)
+Admin -- (Relatorios)
+
+' --- Relacionamentos entre Casos de Uso (Include) ---
+
+' É obrigatório consultar a agenda para realizar um novo agendamento
+(Agendamento) .> (Agenda) : <<include>>
+
+' Ao executar um serviço, é obrigatório atualizar o prontuário do pet
+(Execucao) .> (Prontuario) : <<include>>
+
+' Adicionando notas para clarificar os fluxos
+note "O cliente realiza estas ações\nprincipalmente pelo portal online." as N1
+(Cliente) .. N1
+N1 .. (CompraOnline)
+
+note "O atendente realiza estas ações\npara clientes no espaço físico." as N2
+(Atendente) .. N2
+N2 .. (VendaFisica)
+
+note "O administrador configura\ne supervisiona o sistema." as N3
+(Admin) .. N3
+N3 .. (GerenciarUsuarios)
+
+@enduml

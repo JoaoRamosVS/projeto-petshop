@@ -5,7 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DBConnection {
+public class DBConnection implements AutoCloseable {
 
 	private String host;
 	private String port;
@@ -58,6 +58,18 @@ public class DBConnection {
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();
 		} catch (SecurityException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void close() {
+		try {
+			if (this.connection != null && !this.connection.isClosed()) {
+				this.connection.close();
+			}
+		} catch (SQLException e) {
+			System.err.println("Erro ao fechar a conexão: " + e.getMessage());
 			e.printStackTrace();
 		}
 	}

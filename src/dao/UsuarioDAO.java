@@ -39,4 +39,56 @@ public class UsuarioDAO {
 			return null;
 		}
 	}
+	
+	public boolean cadastrarUsuario(Usuario novoUsuario) {
+		try(DBConnection db = new DBConnection()) {
+			Connection conn = db.getConnection();
+			PreparedStatement query = conn.prepareStatement("INSERT INTO TB_USUARIOS (EMAIL, SENHA, ATIVO, FOTO, PERFIL_ID) VALUES (?, ?, 'S', null, ?)");
+			query.setString(1, novoUsuario.getEmail());
+			query.setString(2, novoUsuario.getSenha());
+			query.setInt(3, novoUsuario.getPerfil().getId());
+			
+			int linhasAfetadas = query.executeUpdate();
+			return linhasAfetadas > 0;
+		}
+		catch(Exception e) {
+			System.err.println("Ocorreu um erro: " + e.getMessage());
+			return false;
+		}
+	}
+	
+	public boolean deletarUsuario(int idUsuario) {
+	    try (DBConnection db = new DBConnection()) {
+	    	Connection conn = db.getConnection();
+	    	PreparedStatement query = conn.prepareStatement("DELETE FROM TB_USUARIOS WHERE ID = ?");
+	        query.setInt(1, idUsuario);
+
+	        int linhasAfetadas = query.executeUpdate();
+	        return linhasAfetadas > 0;
+
+	    } catch (Exception e) {
+	        System.err.println("Ocorreu um erro: " + e.getMessage());
+	        return false;
+	    }
+	}
+	
+	public Boolean verificarSeEmailJaCadastrado(String email) {
+		try(DBConnection db = new DBConnection()) {
+			Connection conn = db.getConnection();
+			PreparedStatement query = conn.prepareStatement("SELECT ID FROM TB_USUARIOS WHERE EMAIL = ?");
+			query.setString(1, email);
+			
+			ResultSet result = query.executeQuery();
+			if(result.next()) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		catch(Exception e) {
+			System.err.println("Ocorreu um erro: " + e.getMessage());
+			return null;
+		}
+	}
 }

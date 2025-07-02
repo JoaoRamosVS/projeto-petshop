@@ -11,7 +11,7 @@ create table TB_USUARIOS (
     EMAIL varchar(50) not null unique,
     SENHA varchar(64) not null,
     FOTO varchar(255),
-    ATIVO char(1) CHECK (ATIVO IN ('S','N')) default 'N',
+    ATIVO char(1) default 'S' CHECK (ATIVO IN ('S','N')),
     PERFIL_ID int,
     foreign key (PERFIL_ID) references TB_PERFIS(ID)
 );
@@ -134,3 +134,6 @@ CREATE TABLE TB_ITENS_PEDIDO (
 	FOREIGN KEY (PEDIDO_ID) REFERENCES TB_PEDIDOS(ID),
     FOREIGN KEY (PRODUTO_ID) REFERENCES TB_PRODUTOS(ID)
 );
+
+INSERT INTO TB_PERFIS (DESCRICAO) VALUES ('Administrador'); -- retornará ID 1
+INSERT INTO TB_USUARIOS (EMAIL, SENHA, ATIVO, FOTO, PERFIL_ID) VALUES ('admin', 'admin', 'S', null, 1);

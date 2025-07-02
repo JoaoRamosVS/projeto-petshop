@@ -1,14 +1,17 @@
 package screens;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-
 import dao.UsuarioDAO;
 import entities.Usuario;
-
-import javax.swing.JLabel;
-import javax.swing.JPasswordField;
 
 public class Login extends JFrame {
     private static final long serialVersionUID = 1L;
@@ -17,49 +20,69 @@ public class Login extends JFrame {
     private JButton botaoEntrar = new JButton();
 
     public Login() {
-        super("Login - PetShop");
+        super("Login - Central Pet");
+        
         setLayout(null);
         setResizable(false);
-        setSize(400, 300);
+        setSize(400, 550);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        getContentPane().setBackground(new Color(240, 240, 240)); 
 
-        JLabel labelUsuario = new JLabel("Usuário:");
-        labelUsuario.setBounds(50, 40, 100, 20);
+        ImageIcon logoOriginal = new ImageIcon(getClass().getResource("/assets/logo.png"));
+        Image imagemRedimensionada = logoOriginal.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+        ImageIcon logoRedimensionada = new ImageIcon(imagemRedimensionada);
+        
+        JLabel labelLogo = new JLabel(logoRedimensionada);
+        labelLogo.setBounds(100, 20, 200, 200); 
+        add(labelLogo);
+
+        JLabel labelUsuario = new JLabel("Usuário (E-mail):");
+        labelUsuario.setBounds(50, 240, 100, 20);
         add(labelUsuario);
 
-        usuario.setBounds(50, 60, 280, 25);
+        usuario.setBounds(50, 260, 280, 30);
+        usuario.setFont(new Font("Arial", Font.PLAIN, 14));
         add(usuario);
 
         JLabel labelSenha = new JLabel("Senha:");
-        labelSenha.setBounds(50, 90, 100, 20);
+        labelSenha.setBounds(50, 300, 100, 20);
         add(labelSenha);
 
-        senha.setBounds(50, 110, 280, 25);
+        senha.setBounds(50, 320, 280, 30);
         add(senha);
 
         botaoEntrar.setText("Entrar");
-        botaoEntrar.setBounds(140, 160, 100, 30);
+        botaoEntrar.setBounds(140, 380, 120, 40);
+        botaoEntrar.setBackground(new Color(0, 136, 240));
+        botaoEntrar.setForeground(Color.WHITE);
+        botaoEntrar.setFont(new Font("Arial", Font.BOLD, 16));
         add(botaoEntrar);
 
-        botaoEntrar.addActionListener(e -> {
-            String user = usuario.getText();
+        botaoEntrar.addActionListener(_ -> {
+            String email = usuario.getText();
             String pass = new String(senha.getPassword());
 
-            System.out.println("Tentativa de login com:");
-            System.out.println("Usuário: " + user);
-            System.out.println("Senha: " + pass);
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
+            Usuario usuarioAutenticado = usuarioDAO.autenticarUsuario(email, pass);
+            
+            if (usuarioAutenticado != null) {
+                JOptionPane.showMessageDialog(this, "Login realizado com sucesso!");
+                this.dispose(); 
 
-            UsuarioDAO realizarLogin = new UsuarioDAO();
-            Usuario usuarioAutenticado = realizarLogin.autenticarUsuario(user, pass);
-            if(usuarioAutenticado == null) {
-            	System.out.println("Falha ao realizar login: usuário e/ou senha inválidos.");
-            }
-            else {
-            	System.out.println("Login realizado com usuário: " + usuarioAutenticado.getEmail());
-            	System.out.println("Perfil do usuário: " + usuarioAutenticado.getPerfil().getDescricao());
+                String perfilDescricao = usuarioAutenticado.getPerfil().getDescricao();
+                
+                if (perfilDescricao.equalsIgnoreCase("admin")) {
+                    new HomeAdmin();
+                } else {
+                    new HomeCliente();
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Usuário ou senha inválidos.", "Erro de Login", JOptionPane.ERROR_MESSAGE);
             }
         });
+        
         setVisible(true);
     }
 }

@@ -5,10 +5,10 @@ public class Usuario {
     private String email;
     private String senha;
     private String foto;
-    private char ativo; // 'S' ou 'N'
+    private String ativo; // 'S' ou 'N'
     private Perfil perfil;
 
-    public Usuario(Integer id, String email, String senha, String foto, char ativo, Perfil perfil) {
+    public Usuario(Integer id, String email, String senha, String foto, String ativo, Perfil perfil) {
         this.id = id;
         this.email = email;
         this.senha = senha;
@@ -16,9 +16,15 @@ public class Usuario {
         this.ativo = ativo;
         this.perfil = perfil;
     }
+    
+    public Usuario() {}
 
 	public Integer getId() {
 		return id;
+	}
+	
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getEmail() {
@@ -45,11 +51,11 @@ public class Usuario {
 		this.foto = foto;
 	}
 
-	public char getAtivo() {
+	public String getAtivo() {
 		return ativo;
 	}
 
-	public void setAtivo(char ativo) {
+	public void setAtivo(String ativo) {
 		this.ativo = ativo;
 	}
 

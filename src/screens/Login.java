@@ -3,6 +3,10 @@ package screens;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
+
+import dao.UsuarioDAO;
+import entities.Usuario;
+
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 
@@ -46,6 +50,15 @@ public class Login extends JFrame {
             System.out.println("Usuário: " + user);
             System.out.println("Senha: " + pass);
 
+            UsuarioDAO realizarLogin = new UsuarioDAO();
+            Usuario usuarioAutenticado = realizarLogin.autenticarUsuario(user, pass);
+            if(usuarioAutenticado == null) {
+            	System.out.println("Falha ao realizar login: usuário e/ou senha inválidos.");
+            }
+            else {
+            	System.out.println("Login realizado com usuário: " + usuarioAutenticado.getEmail());
+            	System.out.println("Perfil do usuário: " + usuarioAutenticado.getPerfil().getDescricao());
+            }
         });
         setVisible(true);
     }

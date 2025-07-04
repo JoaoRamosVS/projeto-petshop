@@ -47,9 +47,9 @@ create table TB_TUTORES (
 );
 
 create table TB_PETS (
-	ID int not null auto_increment,
+	ID int primary key not null auto_increment,
     RACA varchar(30) not null,
-    TAMANHO int check (TAMANHO IN (1,2,3,4)) not null, -- 1 - muito pequeno, 2 - pequeno, 3 - medio, 4 - grande
+    TAMANHO int not null check (TAMANHO IN (1,2,3,4)), -- 1 - muito pequeno, 2 - pequeno, 3 - medio, 4 - grande
     PESO decimal(5,2) not null,
     IDADE int not null,
     OBS text,
@@ -59,7 +59,7 @@ create table TB_PETS (
 );
 
 create table TB_COMPRAS (
-	ID int not null auto_increment,
+	ID int primary key not null auto_increment,
     VENDEDOR_ID int,
     VALOR decimal(8,2) not null,
 	DT_COMPRA datetime not null,
@@ -121,7 +121,7 @@ create table TB_PEDIDOS (
     DT_RETIRADA datetime, -- se pedido for feito online, podera ser diferente. no front deve ter tratamento 
     CLIENTE_ID int,
     FUNCIONARIO_ID int null, -- null indica que o campo pode estar vazio, no caso do pedido ser feito online. caso contrário deve ser preenchido com o id do caixa
-    foreign key (CLIENTE_ID) references TB_TUTOR(ID),
+    foreign key (CLIENTE_ID) references TB_TUTORES(ID),
     foreign key (FUNCIONARIO_ID) references TB_FUNCIONARIOS(ID)
 );
 
@@ -137,3 +137,4 @@ CREATE TABLE TB_ITENS_PEDIDO (
 
 INSERT INTO TB_PERFIS (DESCRICAO) VALUES ('Administrador'); -- retornará ID 1
 INSERT INTO TB_USUARIOS (EMAIL, SENHA, ATIVO, FOTO, PERFIL_ID) VALUES ('admin', 'admin', 'S', null, 1);
+INSERT INTO TB_PERFIS (DESCRICAO) VALUES ('Cliente'); -- retornará ID 2

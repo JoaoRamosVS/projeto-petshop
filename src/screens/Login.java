@@ -72,7 +72,7 @@ public class Login extends JFrame {
 
                 String perfilDescricao = usuarioAutenticado.getPerfil().getDescricao();
                 
-                if (perfilDescricao.equalsIgnoreCase("admin")) {
+                if (perfilDescricao.equalsIgnoreCase("Administrador")) {
                     new HomeAdmin();
                 } else {
                     new HomeCliente();

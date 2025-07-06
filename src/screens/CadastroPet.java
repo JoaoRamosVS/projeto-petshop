@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import dao.PetDAO;
+import dao.TutorDAO;
 import entities.Pet;
 import entities.Tutor;
 
@@ -39,8 +40,8 @@ public class CadastroPet extends JFrame {
         comboTutores.setBounds(50, 50, 380, 30);
         add(comboTutores);
         
-        PetDAO petDAO = new PetDAO();
-        List<Tutor> tutores = petDAO.listarTutores();
+        TutorDAO tutorDAO = new TutorDAO();
+        List<Tutor> tutores = tutorDAO.listarTutores();
         for (Tutor tutor : tutores) {
             comboTutores.addItem(tutor);
         }
@@ -84,6 +85,7 @@ public class CadastroPet extends JFrame {
             novoPet.setObs("");
             novoPet.setOcorrencias("");
             
+            PetDAO petDAO = new PetDAO();
             boolean sucesso = petDAO.cadastrarPet(novoPet);
             
             if (sucesso) {

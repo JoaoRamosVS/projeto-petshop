@@ -13,27 +13,6 @@ import entities.Tutor;
 
 public class PetDAO {
 
-    public List<Tutor> listarTutores() {
-        List<Tutor> listaDeTutores = new ArrayList<>();
-        String sql = "SELECT ID, NOME FROM TB_TUTORES ORDER BY NOME";
-
-        try (DBConnection db = new DBConnection();
-             Connection conn = db.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-
-            while (rs.next()) {
-                Tutor tutor = new Tutor();
-                tutor.setId(rs.getInt("ID"));
-                tutor.setNome(rs.getString("NOME"));
-                listaDeTutores.add(tutor);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return listaDeTutores;
-    }
-
     public boolean cadastrarPet(Pet pet) {
         String sql = "INSERT INTO TB_PETS (RACA, TAMANHO, PESO, IDADE, OBS, OCORRENCIAS, TUTOR_ID) VALUES (?, ?, ?, ?, ?, ?, ?)";
 

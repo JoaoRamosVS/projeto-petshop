@@ -5,11 +5,35 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
 import database.DBConnection;
 import entities.Tutor;
 import entities.Usuario;
 
 public class TutorDAO {
+	
+	public List<Tutor> listarTutores() {
+        List<Tutor> listaDeTutores = new ArrayList<>();
+        
+        try (DBConnection db = new DBConnection();
+             Connection conn = db.getConnection();
+             PreparedStatement ps = conn.prepareStatement("SELECT ID, NOME, CPF FROM TB_TUTORES ORDER BY NOME");
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Tutor tutor = new Tutor();
+                tutor.setId(rs.getInt("ID"));
+                tutor.setNome(rs.getString("NOME"));
+                tutor.setCpf(rs.getString("CPF"));
+                listaDeTutores.add(tutor);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listaDeTutores;
+    }
 
     public boolean cadastrarNovoTutor(Tutor tutor, Usuario usuario) {
         Connection conn = null;

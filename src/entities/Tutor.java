@@ -110,6 +110,6 @@ public class Tutor {
 
 	@Override
 	public String toString() {
-	    return this.getNome();
+	    return this.getNome() + " - " + this.getCpf();
 	}
 }

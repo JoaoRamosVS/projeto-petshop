@@ -62,7 +62,7 @@ public class CadastroCliente extends JFrame {
         btnSalvar.setFont(new Font("Arial", Font.BOLD, 16));
         add(btnSalvar);
         
-        btnSalvar.addActionListener(_ -> {
+        btnSalvar.addActionListener(e -> {
             String nome = txtNome.getText();
             String cpf = txtCpf.getText();
             String telefone = txtTelefone.getText();

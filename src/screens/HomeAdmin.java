@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import java.awt.Color;
 
 public class HomeAdmin extends JFrame {
     private static final long serialVersionUID = 1L;
@@ -21,13 +22,13 @@ public class HomeAdmin extends JFrame {
         menuBar.add(menuCadastros);
         
         JMenuItem itemClientes = new JMenuItem("Clientes (Tutores)");
-        itemClientes.addActionListener(_ -> {
+        itemClientes.addActionListener(e -> {
             new CadastroCliente(); 
         });
         menuCadastros.add(itemClientes);
         
         JMenuItem itemPets = new JMenuItem("Pets");
-        itemPets.addActionListener(_ -> {
+        itemPets.addActionListener(e -> {
             new CadastroPet();
         });
         menuCadastros.add(itemPets);
@@ -46,6 +47,14 @@ public class HomeAdmin extends JFrame {
         
         JMenuItem itemVenda = new JMenuItem("Nova Venda (PDV)");
         menuOperacoes.add(itemVenda);
+        
+        JMenuItem itemLogoff = new JMenuItem("Sair");
+        itemLogoff.setForeground(Color.RED);
+        itemLogoff.addActionListener(e -> {
+        	dispose();
+        	new Login();
+        });
+        menuBar.add(itemLogoff);
         
         setVisible(true);
     }

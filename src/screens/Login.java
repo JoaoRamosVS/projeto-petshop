@@ -59,7 +59,7 @@ public class Login extends JFrame {
         botaoEntrar.setFont(new Font("Arial", Font.BOLD, 16));
         add(botaoEntrar);
 
-        botaoEntrar.addActionListener(_ -> {
+        botaoEntrar.addActionListener(e -> {
             String email = usuario.getText();
             String pass = new String(senha.getPassword());
 

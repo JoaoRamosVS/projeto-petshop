@@ -66,7 +66,7 @@ public class CadastroPet extends JFrame {
         btnSalvar.setFont(new Font("Arial", Font.BOLD, 16));
         add(btnSalvar);
         
-        btnSalvar.addActionListener(_ -> {
+        btnSalvar.addActionListener(e -> {
             Tutor tutorSelecionado = (Tutor) comboTutores.getSelectedItem();
             String raca = txtRaca.getText();
             int idade = Integer.parseInt(txtIdade.getText());

@@ -63,6 +63,38 @@ public class TutorDAO {
 		return listaDeTutores;
 	}
 
+	public Tutor buscarTutorPorId(int id) {
+	    Tutor tutor = null;
+	    try (DBConnection db = new DBConnection();
+	         Connection conn = db.getConnection();
+	         PreparedStatement ps = conn.prepareStatement("SELECT T.*, U.EMAIL FROM TB_TUTORES T JOIN TB_USUARIOS U ON T.USUARIO_ID = U.ID WHERE T.ID = ?")) {
+
+	        ps.setInt(1, id);
+	        ResultSet rs = ps.executeQuery();
+	        if (rs.next()) {
+	            tutor = new Tutor();
+	            Usuario usuario = new Usuario();
+
+	            tutor.setId(rs.getInt("ID"));
+	            tutor.setNome(rs.getString("NOME"));
+	            tutor.setCpf(rs.getString("CPF"));
+	            tutor.setEndereco(rs.getString("ENDERECO"));
+	            tutor.setBairro(rs.getString("BAIRRO"));
+	            tutor.setCidade(rs.getString("CIDADE"));
+	            tutor.setUf(rs.getString("UF"));
+	            tutor.setCep(rs.getString("CEP"));
+	            tutor.setTelefone(rs.getString("TELEFONE"));
+
+	            usuario.setEmail(rs.getString("EMAIL"));
+	            tutor.setUsuario(usuario);
+	        }
+	    } catch (SQLException e) {
+	        System.err.println("Erro ao buscar tutor por ID: " + e.getMessage());
+	        e.printStackTrace();
+	    }
+	    return tutor;
+	}
+	
 	public boolean cadastrarNovoTutor(Tutor tutor, Usuario usuario) {
 		Connection conn = null;
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
@@ -126,4 +158,29 @@ public class TutorDAO {
 			return false;
 		}
 	}
+	
+	public boolean atualizarTutor(Tutor tutor) {
+        String sql = "UPDATE TB_TUTORES SET ENDERECO = ?, BAIRRO = ?, CIDADE = ?, UF = ?, CEP = ?, TELEFONE = ? WHERE ID = ?";
+
+        try (DBConnection db = new DBConnection();
+             Connection conn = db.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, tutor.getEndereco());
+            ps.setString(2, tutor.getBairro());
+            ps.setString(3, tutor.getCidade());
+            ps.setString(4, tutor.getUf());
+            ps.setString(5, tutor.getCep());
+            ps.setString(6, tutor.getTelefone());
+            ps.setInt(7, tutor.getId());
+
+            int linhasAfetadas = ps.executeUpdate();
+            return linhasAfetadas > 0;
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao atualizar tutor: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

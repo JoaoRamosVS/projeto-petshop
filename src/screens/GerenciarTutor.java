@@ -60,7 +60,12 @@ public class GerenciarTutor extends JFrame{
                 infoPanel.add(new JLabel("Email: " + tutor.getUsuario().getEmail()));
                 
                 JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+                
                 JButton btnEditar = new JButton("Editar");
+                btnEditar.addActionListener(e -> {
+                    new EdicaoTutor(tutor.getId());
+                    frameAtual.dispose(); 
+                });
                 
                 JButton btnInativar = new JButton("Inativar");
                 btnInativar.addActionListener(e -> {

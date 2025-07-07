@@ -1,0 +1,27 @@
+USE DB_PETSHOP;
+
+NSERT INTO TB_USUARIOS (EMAIL, SENHA, PERFIL_ID) VALUES ('ana.silva@email.com', 'senha123', 2);
+INSERT INTO TB_TUTORES (NOME, CPF, TELEFONE, CEP, USUARIO_ID) VALUES ('Ana Silva', '111.222.333-44', '(11) 98765-4321', '01001-000', LAST_INSERT_ID());
+SET @tutor_id = LAST_INSERT_ID();
+INSERT INTO TB_PETS (NOME, RACA, TAMANHO, PESO, IDADE, OBS, OCORRENCIAS, TUTOR_ID) VALUES
+('Rex', 'Labrador', 3, 28.5, 5, 'Adora brincar de buscar a bolinha.', '', @tutor_id),
+('Mia', 'Siamês', 2, 4.2, 3, 'Um pouco arisca com estranhos.', '', @tutor_id);
+
+INSERT INTO TB_USUARIOS (EMAIL, SENHA, PERFIL_ID) VALUES ('bruno.costa@email.com', 'senha456', 2);
+INSERT INTO TB_TUTORES (NOME, CPF, TELEFONE, CEP, USUARIO_ID) VALUES ('Bruno Costa', '222.333.444-55', '(21) 91234-5678', '20040-030', LAST_INSERT_ID());
+SET @tutor_id = LAST_INSERT_ID();
+INSERT INTO TB_PETS (NOME, RACA, TAMANHO, PESO, IDADE, OBS, OCORRENCIAS, TUTOR_ID) VALUES
+('Thor', 'Golden Retriever', 4, 32.0, 7, 'Muito dócil e amigável com outros cães.', 'Alergia a produtos de limpeza com cheiro forte.', @tutor_id);
+
+INSERT INTO TB_USUARIOS (EMAIL, SENHA, PERFIL_ID) VALUES ('carla.mendes@email.com', 'senha789', 2);
+INSERT INTO TB_TUTORES (NOME, CPF, TELEFONE, CEP, USUARIO_ID) VALUES ('Carla Mendes', '333.444.555-66', '(31) 95555-4444', '30112-010', LAST_INSERT_ID());
+SET @tutor_id = LAST_INSERT_ID();
+INSERT INTO TB_PETS (NOME, RACA, TAMANHO, PESO, IDADE, OBS, OCORRENCIAS, TUTOR_ID) VALUES
+('Lola', 'Poodle', 2, 6.8, 2, 'Energética, precisa de passeios longos.', '', @tutor_id);
+
+INSERT INTO TB_USUARIOS (EMAIL, SENHA, PERFIL_ID) VALUES ('daniel.oliveira@email.com', 'senha101', 2);
+INSERT INTO TB_TUTORES (NOME, CPF, TELEFONE, CEP, USUARIO_ID) VALUES ('Daniel Oliveira', '444.555.666-77', '(41) 94444-3333', '80010-010', LAST_INSERT_ID());
+SET @tutor_id = LAST_INSERT_ID();
+INSERT INTO TB_PETS (NOME, RACA, TAMANHO, PESO, IDADE, OBS, OCORRENCIAS, TUTOR_ID) VALUES
+('Bolinha', 'Shih Tzu', 2, 5.5, 4, '', '', @tutor_id),
+('Frajola', 'Vira-lata (SRD)', 3, 12.0, 6, 'Resgatado da rua, muito carinhoso.', '', @tutor_id);

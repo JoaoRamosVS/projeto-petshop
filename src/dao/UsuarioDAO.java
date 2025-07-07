@@ -40,11 +40,11 @@ public class UsuarioDAO {
 		}
 	}
 	
-	public boolean deletarUsuario(int idUsuario) {
+	public boolean inativarUsuario(String email) {
 	    try (DBConnection db = new DBConnection()) {
 	    	Connection conn = db.getConnection();
-	    	PreparedStatement query = conn.prepareStatement("DELETE FROM TB_USUARIOS WHERE ID = ?");
-	        query.setInt(1, idUsuario);
+	    	PreparedStatement query = conn.prepareStatement("UPDATE TB_USUARIOS SET ATIVO = 'N' WHERE EMAIL = ?");
+	        query.setString(1, email);
 
 	        int linhasAfetadas = query.executeUpdate();
 	        return linhasAfetadas > 0;

@@ -11,11 +11,13 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import dao.TutorDAO;
+import dao.UsuarioDAO;
 import entities.Tutor;
 
 public class GerenciarTutor extends JFrame{
@@ -27,6 +29,8 @@ public class GerenciarTutor extends JFrame{
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setLayout(new BorderLayout());
+		
+		JFrame frameAtual = this;
 		
 		JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
@@ -57,9 +61,31 @@ public class GerenciarTutor extends JFrame{
                 
                 JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
                 JButton btnEditar = new JButton("Editar");
-                JButton btnExcluir = new JButton("Excluir");
+                
+                JButton btnInativar = new JButton("Inativar");
+                btnInativar.addActionListener(e -> {
+                	int confirmaExclusao = JOptionPane.showConfirmDialog(frameAtual, 
+                			"Tem certeza que deseja inativar o tutor " + tutor.getNome() + "'?\nO acesso dele(a) ao sistema será bloqueado.",
+                			"Confirmar Inativação",
+                			JOptionPane.YES_NO_OPTION,
+                            JOptionPane.WARNING_MESSAGE);
+                	if(confirmaExclusao == JOptionPane.YES_OPTION) {
+                		UsuarioDAO usuarioDAO = new UsuarioDAO();
+                		boolean sucesso = usuarioDAO.inativarUsuario(tutor.getUsuario().getEmail());
+                		
+                		if(sucesso) {
+                			JOptionPane.showMessageDialog(frameAtual, "Tutor inativado com sucesso!");
+                			frameAtual.dispose();
+                            new GerenciarTutor(); // para atualizar a listagem
+                		}
+                		else {
+                            JOptionPane.showMessageDialog(frameAtual, "Ocorreu um erro ao inativar o tutor.", "Erro", JOptionPane.ERROR_MESSAGE);
+                        }
+                	}
+                });
+                
                 actionPanel.add(btnEditar);
-                actionPanel.add(btnExcluir);
+                actionPanel.add(btnInativar);
 
                 tutorPanel.add(infoPanel, BorderLayout.CENTER);
                 tutorPanel.add(actionPanel, BorderLayout.SOUTH);

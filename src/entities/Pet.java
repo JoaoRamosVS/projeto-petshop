@@ -2,18 +2,22 @@ package entities;
 
 import java.math.BigDecimal;
 
+import enums.TamanhoPetEnum;
+
 public class Pet {
     private Integer id;
+    private String nome;
     private String raca;
-    private int tamanho; // 1-muito pequeno, 2-pequeno, 3-medio, 4-grande
+    private TamanhoPetEnum tamanho;
     private BigDecimal peso;
     private int idade;
     private String obs;
     private String ocorrencias;
     private Tutor tutor;
 
-    public Pet(Integer id, String raca, int tamanho, BigDecimal peso, int idade, String obs, String ocorrencias, Tutor tutor) {
+    public Pet(Integer id, String nome, String raca, TamanhoPetEnum tamanho, BigDecimal peso, int idade, String obs, String ocorrencias, Tutor tutor) {
         this.id = id;
+        this.nome = nome;
         this.raca = raca;
         this.tamanho = tamanho;
         this.peso = peso;
@@ -34,6 +38,14 @@ public class Pet {
 	public void setId(Integer id) {
 		this.id = id;
 	}
+	
+	public String getNome() {
+		return nome;
+	}
+	
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
 
 	public String getRaca() {
 		return raca;
@@ -43,11 +55,11 @@ public class Pet {
 		this.raca = raca;
 	}
 
-	public int getTamanho() {
+	public TamanhoPetEnum getTamanho() {
 		return tamanho;
 	}
 
-	public void setTamanho(int tamanho) {
+	public void setTamanho(TamanhoPetEnum tamanho) {
 		this.tamanho = tamanho;
 	}
 

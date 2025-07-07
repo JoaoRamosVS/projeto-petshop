@@ -2,31 +2,28 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import database.DBConnection;
 import entities.Pet;
-import entities.Tutor;
 
 public class PetDAO {
 
-    public boolean cadastrarPet(Pet pet) {
-        String sql = "INSERT INTO TB_PETS (RACA, TAMANHO, PESO, IDADE, OBS, OCORRENCIAS, TUTOR_ID) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    public boolean cadastrarPet(Pet novoPet) {
+        String sql = "INSERT INTO TB_PETS (NOME, RACA, TAMANHO, PESO, IDADE, OBS, OCORRENCIAS, TUTOR_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (DBConnection db = new DBConnection();
              Connection conn = db.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             
-            ps.setString(1, pet.getRaca());
-            ps.setInt(2, pet.getTamanho());
-            ps.setBigDecimal(3, pet.getPeso());
-            ps.setInt(4, pet.getIdade());
-            ps.setString(5, pet.getObs());
-            ps.setString(6, pet.getOcorrencias());
-            ps.setInt(7, pet.getTutor().getId());
+            ps.setString(1, novoPet.getNome());
+        	ps.setString(2, novoPet.getRaca());
+            ps.setInt(3, novoPet.getTamanho().getId());
+            ps.setBigDecimal(4, novoPet.getPeso());
+            ps.setInt(5, novoPet.getIdade());
+            ps.setString(6, novoPet.getObs());
+            ps.setString(7, novoPet.getOcorrencias());
+            ps.setInt(8, novoPet.getTutor().getId());
 
             int linhasAfetadas = ps.executeUpdate();
             return linhasAfetadas > 0;

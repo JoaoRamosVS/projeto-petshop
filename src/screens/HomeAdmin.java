@@ -21,11 +21,11 @@ public class HomeAdmin extends JFrame {
         JMenu menuCadastros = new JMenu("Cadastros");
         menuBar.add(menuCadastros);
         
-        JMenuItem itemClientes = new JMenuItem("Clientes (Tutores)");
-        itemClientes.addActionListener(e -> {
-            new CadastroCliente(); 
+        JMenuItem itemTutores = new JMenuItem("Tutores");
+        itemTutores.addActionListener(e -> {
+            new CadastroTutor(); 
         });
-        menuCadastros.add(itemClientes);
+        menuCadastros.add(itemTutores);
         
         JMenuItem itemPets = new JMenuItem("Pets");
         itemPets.addActionListener(e -> {

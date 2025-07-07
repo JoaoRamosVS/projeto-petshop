@@ -75,7 +75,7 @@ public class Login extends JFrame {
                 if (perfilDescricao.equalsIgnoreCase("Administrador")) {
                     new HomeAdmin();
                 } else {
-                    new HomeCliente();
+                    new HomeTutor();
                 }
 
             } else {

@@ -13,7 +13,7 @@ import dao.TutorDAO;
 import entities.Tutor;
 import entities.Usuario;
 
-public class CadastroCliente extends JFrame {
+public class CadastroTutor extends JFrame {
     private static final long serialVersionUID = 1L;
 
     private JTextField txtNome = new JTextField();
@@ -23,7 +23,7 @@ public class CadastroCliente extends JFrame {
     private JTextField txtEmail = new JTextField();
     private JTextField txtSenha = new JTextField();
 
-    public CadastroCliente() {
+    public CadastroTutor() {
         setTitle("Cadastro de Clientes");
         setSize(500, 520);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 

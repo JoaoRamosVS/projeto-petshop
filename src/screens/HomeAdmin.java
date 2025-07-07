@@ -38,6 +38,15 @@ public class HomeAdmin extends JFrame {
         
         JMenuItem itemFuncionarios = new JMenuItem("Funcionários");
         menuCadastros.add(itemFuncionarios);
+        
+        JMenu menuGerenciar = new JMenu("Gerenciar");
+        menuBar.add(menuGerenciar);
+        
+        JMenuItem itemGerenciarTutores = new JMenuItem("Tutores");
+        itemGerenciarTutores.addActionListener(e -> {
+        	new GerenciarTutor();
+        });
+        menuGerenciar.add(itemGerenciarTutores);
 
         JMenu menuOperacoes = new JMenu("Operações");
         menuBar.add(menuOperacoes);

@@ -46,7 +46,7 @@ public class CadastroPet extends JFrame {
         add(comboTutores);
         
         TutorDAO tutorDAO = new TutorDAO();
-        List<Tutor> tutores = tutorDAO.listarTutores();
+        List<Tutor> tutores = tutorDAO.listarTutoresComNomeECPF();
         for (Tutor tutor : tutores) {
             comboTutores.addItem(tutor);
         }

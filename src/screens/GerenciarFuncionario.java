@@ -62,8 +62,7 @@ public class GerenciarFuncionario extends JFrame {
                 
                 JButton btnEditar = new JButton("Editar");
                 btnEditar.addActionListener(e -> {
-                    // new EdicaoFuncionario(funcionario.getId());
-                    JOptionPane.showMessageDialog(frameAtual, "A tela de edição de funcionário ainda não foi implementada.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    new EdicaoFuncionario(funcionario.getId());
                     frameAtual.dispose(); 
                 });
                 

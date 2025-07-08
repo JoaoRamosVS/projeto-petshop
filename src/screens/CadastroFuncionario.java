@@ -67,7 +67,7 @@ public class CadastroFuncionario extends JFrame {
         lblCargo.setBounds(50, 390, 150, 20);
         add(lblCargo);
 
-        comboCargo = new JComboBox<>(new String[]{"Tosador", "Veterinário"});
+        comboCargo = new JComboBox<>(new String[]{"Tosador", "Veterinário", "Atendente"});
         comboCargo.setBounds(50, 410, 380, 30);
         add(comboCargo);
         

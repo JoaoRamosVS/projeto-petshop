@@ -5,12 +5,41 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import database.DBConnection;
 import entities.Funcionario;
 import entities.Usuario;
 
 public class FuncionarioDAO {
+	
+	public List<Funcionario> listarFuncionarios () {
+		List<Funcionario> listaDeFuncionarios = new ArrayList<>();
+		
+		try (DBConnection db = new DBConnection();
+				Connection conn = db.getConnection();
+				PreparedStatement ps = conn.prepareStatement("SELECT TF.ID, TF.NOME, TF.CPF, TF.TELEFONE, TF.CARGO, TU.EMAIL FROM TB_FUNCIONARIOS AS TF INNER JOIN TB_USUARIOS AS TU ON TF.USUARIO_ID = TU.ID WHERE TU.ATIVO = 'S' ORDER BY NOME;");
+				ResultSet rs = ps.executeQuery()) {
+			while (rs.next()) {
+				Funcionario funcionario = new Funcionario();
+				Usuario usuario = new Usuario();
+				funcionario.setId(rs.getInt("ID"));
+				funcionario.setNome(rs.getString("NOME"));
+				funcionario.setCpf(rs.getString("CPF"));
+				funcionario.setTelefone(rs.getString("TELEFONE"));
+				funcionario.setCargo(rs.getString("CARGO"));
+				usuario.setEmail(rs.getString("EMAIL"));
+				funcionario.setUsuario(usuario);
+				listaDeFuncionarios.add(funcionario);
+			}
+		}
+		catch (SQLException e) {
+			System.err.println("Erro ao buscar tutores: " + e.getMessage());
+			e.printStackTrace();
+		}
+		return listaDeFuncionarios;
+	}
 
 	public boolean cadastrarNovoFuncionario(Funcionario novoFuncionario, Usuario novoUsuario) {
 		Connection conn = null;

@@ -37,6 +37,9 @@ public class HomeAdmin extends JFrame {
         menuCadastros.add(itemProdutos);
         
         JMenuItem itemFuncionarios = new JMenuItem("Funcionários");
+        itemFuncionarios.addActionListener(e -> {
+        	new CadastroFuncionario();
+        });
         menuCadastros.add(itemFuncionarios);
         
         JMenu menuGerenciar = new JMenu("Gerenciar");

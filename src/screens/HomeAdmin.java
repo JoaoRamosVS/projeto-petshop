@@ -39,9 +39,6 @@ public class HomeAdmin extends JFrame {
         });
         menuCadastros.add(itemPets);
         
-        JMenuItem itemProdutos = new JMenuItem("Produtos");
-        menuCadastros.add(itemProdutos);
-        
         JMenuItem itemFuncionarios = new JMenuItem("Funcionários");
         itemFuncionarios.addActionListener(e -> {
         	new CadastroFuncionario();
@@ -63,6 +60,12 @@ public class HomeAdmin extends JFrame {
         });
         menuGerenciar.add(itemGerenciarFuncionarios);
 
+        JMenuItem itemGerenciarUsuarios = new JMenuItem("Usuários");
+        itemGerenciarUsuarios.addActionListener(e -> {
+        	new GerenciarUsuario();
+        });
+        menuGerenciar.add(itemGerenciarUsuarios);
+        
         JMenu menuOperacoes = new JMenu("Operações");
         menuBar.add(menuOperacoes);
         

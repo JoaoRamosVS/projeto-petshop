@@ -3,6 +3,10 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import database.DBConnection;
 import entities.Perfil;
 import entities.Usuario;
@@ -38,6 +42,33 @@ public class UsuarioDAO {
 			System.err.println("Ocorreu um erro: " + e.getMessage());
 			return null;
 		}
+	}
+	
+	public List<Usuario> listarUsuarios() {
+		List<Usuario> listaDeUsuarios = new ArrayList<>();
+		
+		try(DBConnection db = new DBConnection();
+				Connection conn = db.getConnection();
+				PreparedStatement ps = conn.prepareStatement("SELECT TU.ID, TU.EMAIL, TU.ATIVO, TP.DESCRICAO FROM TB_USUARIOS TU JOIN TB_PERFIS TP ON TU.PERFIL_ID = TP.ID WHERE NOT EMAIL = 'admin' ORDER BY ATIVO DESC, EMAIL");
+				ResultSet rs = ps.executeQuery()) {
+			
+			while(rs.next()) {
+				Usuario usuario = new Usuario();
+				Perfil perfil = new Perfil();
+				usuario.setId(rs.getInt("ID"));
+				usuario.setEmail(rs.getString("EMAIL"));
+				usuario.setAtivo(rs.getString("ATIVO"));
+				
+				perfil.setDescricao(rs.getString("DESCRICAO"));
+				usuario.setPerfil(perfil);
+				listaDeUsuarios.add(usuario);
+			}
+		}
+		catch (SQLException e) {
+			System.err.println("Erro ao buscar usuários: " + e.getMessage());
+			e.printStackTrace();
+		}
+		return listaDeUsuarios;
 	}
 	
 	public boolean inativarUsuario(String email) {

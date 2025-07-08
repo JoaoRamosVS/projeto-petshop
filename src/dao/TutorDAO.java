@@ -111,7 +111,7 @@ public class TutorDAO {
 
 					psUsuario.setString(1, usuario.getEmail());
 					psUsuario.setString(2, usuario.getSenha());
-					psUsuario.setInt(3, 2);
+					psUsuario.setInt(3, 3);
 
 					int linhasAfetadasUsuario = psUsuario.executeUpdate();
 

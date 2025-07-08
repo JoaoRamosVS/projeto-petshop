@@ -34,12 +34,9 @@ public class DBConnection implements AutoCloseable {
 	}
 	
 	private void doConnection() {
-		String timezone = "&useTimezone=true&serverTimezone=UTC";// use o &useTimezone=true&serverTimezone=UTC para não ter problemas de data;
+		String timezone = "&useTimezone=true&serverTimezone=UTC";
 		String url = "jdbc:mysql://"+this.host+":"+port+"/"+this.schema+"?user="+this.user+"&password="+this.password+timezone;
 		try {
-			// Class.forName("com.mysql.jdbc.Driver").newInstance();
-			// A linha acima foi depreciada após o mysql 8.0
-			// A partir do mysql-connector-java-8.0.17.jar utilize as duas linhas abaixo
 			Class.forName("com.mysql.cj.jdbc.Driver").getConstructor().newInstance();
 			DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
 			this.connection = DriverManager.getConnection(url);

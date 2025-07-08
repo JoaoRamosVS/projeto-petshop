@@ -2,15 +2,21 @@ package screens;
 
 import java.awt.Font;
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JScrollPane;
+import javax.swing.text.MaskFormatter;
 
 import dao.PetDAO;
 import dao.TutorDAO;
@@ -25,17 +31,13 @@ public class CadastroPet extends JFrame {
     private JComboBox<TamanhoPetEnum> comboTamanho;
     private JTextField txtNome = new JTextField();
     private JTextField txtRaca = new JTextField();
-    private JTextField txtIdade = new JTextField();
+    private JFormattedTextField txtDtNascimento;
     private JTextField txtPeso = new JTextField();
     private JTextArea txtObservacoes = new JTextArea();
+    private Tutor tutor;
 
     public CadastroPet() {
-        setTitle("Cadastro de Pets");
-        setSize(500, 680);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setLayout(null);
-
+        inicializarComponentes();
         
         JLabel lblTutor = new JLabel("Tutor Responsável:");
         lblTutor.setBounds(50, 30, 150, 20);
@@ -47,13 +49,44 @@ public class CadastroPet extends JFrame {
         
         TutorDAO tutorDAO = new TutorDAO();
         List<Tutor> tutores = tutorDAO.listarTutoresComNomeECPF();
-        for (Tutor tutor : tutores) {
-            comboTutores.addItem(tutor);
+        for (Tutor t : tutores) {
+            comboTutores.addItem(t);
         }
+    }
 
+    public CadastroPet(Tutor tutor) {
+        this.tutor = tutor;
+        inicializarComponentes();
+        
+        JLabel lblTutor = new JLabel("Tutor Responsável:");
+        lblTutor.setBounds(50, 30, 150, 20);
+        add(lblTutor);
+        
+        JTextField txtTutorFixo = new JTextField(tutor.getNome());
+        txtTutorFixo.setBounds(50, 50, 380, 30);
+        txtTutorFixo.setEditable(false);
+        add(txtTutorFixo);
+    }
+    
+    private void inicializarComponentes() {
+        setTitle("Cadastro de Pet");
+        setSize(500, 680);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(null);
+
+        try {
+            MaskFormatter mascaraData = new MaskFormatter("##/##/####");
+            mascaraData.setPlaceholderCharacter('_');
+            txtDtNascimento = new JFormattedTextField(mascaraData);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            txtDtNascimento = new JFormattedTextField();
+        }
+        
         addLabelAndField("Nome:", 90, txtNome, 110);
         addLabelAndField("Raça:", 150, txtRaca, 170);
-        addLabelAndField("Idade (anos):", 210, txtIdade, 230);
+        addLabelAndField("Data de Nascimento (dd/mm/aaaa):", 210, txtDtNascimento, 230);
         addLabelAndField("Peso (kg):", 270, txtPeso, 290);
         
         JLabel lblTamanho = new JLabel("Tamanho:");
@@ -81,49 +114,43 @@ public class CadastroPet extends JFrame {
         btnSalvar.setFont(new Font("Arial", Font.BOLD, 16));
         add(btnSalvar);
         
-        btnSalvar.addActionListener(e -> {
-            try {
-            	Tutor tutorSelecionado = (Tutor) comboTutores.getSelectedItem();
-            	String nome = txtNome.getText();
-            	String raca = txtRaca.getText();
-            	int idade = Integer.parseInt(txtIdade.getText());
-            	BigDecimal peso = new BigDecimal(txtPeso.getText());
-            	
-            	TamanhoPetEnum tamanhoSelecionado = (TamanhoPetEnum) comboTamanho.getSelectedItem();
-            	
-            	String observacoes = txtObservacoes.getText();
-            	
-            	Pet novoPet = new Pet();
-            	novoPet.setTutor(tutorSelecionado);
-            	novoPet.setNome(nome);
-            	novoPet.setRaca(raca);
-            	novoPet.setIdade(idade);
-            	novoPet.setPeso(peso);
-            	novoPet.setTamanho(tamanhoSelecionado); 
-            	novoPet.setObs(observacoes);
-            	novoPet.setOcorrencias("");
-            	
-            	PetDAO petDAO = new PetDAO();
-            	boolean sucesso = petDAO.cadastrarPet(novoPet);
-            	
-            	if (sucesso) {
-            		JOptionPane.showMessageDialog(this, "Pet cadastrado com sucesso!");
-            		this.dispose();
-            	} else {
-            		JOptionPane.showMessageDialog(this, "Erro ao cadastrar pet.", "Erro", JOptionPane.ERROR_MESSAGE);
-            	}
-            	
-            } catch (Exception ex) {
-            	JOptionPane.showMessageDialog(this, "Erro ao cadastrar pet: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-            }
-        });
-
+        btnSalvar.addActionListener(e -> salvarPet());
+        
         setVisible(true);
+    }
+    
+    private void salvarPet() {
+        try {
+            Tutor tutorSelecionado = (comboTutores != null) ? (Tutor) comboTutores.getSelectedItem() : this.tutor;
+
+            DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            Pet novoPet = new Pet();
+            novoPet.setTutor(tutorSelecionado);
+            novoPet.setNome(txtNome.getText());
+            novoPet.setRaca(txtRaca.getText());
+            novoPet.setDtNascimento(LocalDate.parse(txtDtNascimento.getText(), formatador));
+            novoPet.setPeso(new BigDecimal(txtPeso.getText()));
+            novoPet.setTamanho((TamanhoPetEnum) comboTamanho.getSelectedItem()); 
+            novoPet.setObs(txtObservacoes.getText());
+            novoPet.setOcorrencias("");
+            
+            PetDAO petDAO = new PetDAO();
+            boolean sucesso = petDAO.cadastrarPet(novoPet);
+            
+            if (sucesso) {
+                JOptionPane.showMessageDialog(this, "Pet cadastrado com sucesso!");
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Erro ao cadastrar pet.", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Erro ao cadastrar pet: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }
     
     private void addLabelAndField(String labelText, int labelY, JTextField textField, int fieldY) {
         JLabel label = new JLabel(labelText);
-        label.setBounds(50, labelY, 150, 20);
+        label.setBounds(50, labelY, 250, 20);
         add(label);
         
         textField.setBounds(50, fieldY, 380, 30);

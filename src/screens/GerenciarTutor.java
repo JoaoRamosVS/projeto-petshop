@@ -34,7 +34,7 @@ public class GerenciarTutor extends JFrame{
 		
 		JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10)); // Adição da margem na tela
+        mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         TutorDAO tutorDAO = new TutorDAO();
         List<Tutor> tutores = tutorDAO.listarTutores();

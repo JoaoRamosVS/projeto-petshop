@@ -1,8 +1,11 @@
 package screens;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -58,8 +61,22 @@ public class Login extends JFrame {
         botaoEntrar.setForeground(Color.WHITE);
         botaoEntrar.setFont(new Font("Arial", Font.BOLD, 16));
         add(botaoEntrar);
+        
+        JLabel lblCadastreSe = new JLabel("Não tem uma conta? Cadastre-se");
+        lblCadastreSe.setBounds(90, 450, 220, 20);
+        lblCadastreSe.setForeground(new Color(0, 102, 204));
+        lblCadastreSe.setFont(new Font("Arial", Font.BOLD, 12));
+        lblCadastreSe.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        add(lblCadastreSe);
 
-        botaoEntrar.addActionListener(e -> {
+        lblCadastreSe.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                new CadastroTutor();
+            }
+        });
+
+        botaoEntrar.addActionListener(_ -> {
             String email = usuario.getText();
             String pass = new String(senha.getPassword());
 
@@ -75,7 +92,7 @@ public class Login extends JFrame {
                 if (perfilDescricao.equalsIgnoreCase("Administrador")) {
                     new HomeAdmin();
                 } else {
-                    new HomeTutor();
+                	new HomeTutor(usuarioAutenticado); 
                 }
 
             } else {

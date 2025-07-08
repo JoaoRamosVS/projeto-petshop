@@ -1,6 +1,7 @@
 package entities;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import enums.TamanhoPetEnum;
 
@@ -10,18 +11,18 @@ public class Pet {
     private String raca;
     private TamanhoPetEnum tamanho;
     private BigDecimal peso;
-    private int idade;
+    private LocalDate dtNascimento;
     private String obs;
     private String ocorrencias;
     private Tutor tutor;
 
-    public Pet(Integer id, String nome, String raca, TamanhoPetEnum tamanho, BigDecimal peso, int idade, String obs, String ocorrencias, Tutor tutor) {
+    public Pet(Integer id, String nome, String raca, TamanhoPetEnum tamanho, BigDecimal peso, LocalDate dtNascimento, String obs, String ocorrencias, Tutor tutor) {
         this.id = id;
         this.nome = nome;
         this.raca = raca;
         this.tamanho = tamanho;
         this.peso = peso;
-        this.idade = idade;
+        this.dtNascimento = dtNascimento;
         this.obs = obs;
         this.ocorrencias = ocorrencias;
         this.tutor = tutor;
@@ -71,12 +72,12 @@ public class Pet {
 		this.peso = peso;
 	}
 
-	public int getIdade() {
-		return idade;
+	public LocalDate getDtNascimento() {
+		return dtNascimento;
 	}
 
-	public void setIdade(int idade) {
-		this.idade = idade;
+	public void setDtNascimento(LocalDate dtNascimento) {
+		this.dtNascimento = dtNascimento;
 	}
 
 	public String getObs() {
@@ -101,6 +102,11 @@ public class Pet {
 
 	public void setTutor(Tutor tutor) {
 		this.tutor = tutor;
+	}
+	
+	@Override
+	public String toString() {
+	    return this.getNome();
 	}
 
 }

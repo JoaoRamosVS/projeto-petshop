@@ -1,10 +1,15 @@
 package screens;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Image;
 
 public class HomeAdmin extends JFrame {
     private static final long serialVersionUID = 1L;
@@ -14,6 +19,7 @@ public class HomeAdmin extends JFrame {
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
         
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
@@ -33,10 +39,10 @@ public class HomeAdmin extends JFrame {
         });
         menuCadastros.add(itemPets);
         
-        JMenuItem itemProdutos = new JMenuItem("Produtos");
-        menuCadastros.add(itemProdutos);
-        
         JMenuItem itemFuncionarios = new JMenuItem("Funcionários");
+        itemFuncionarios.addActionListener(e -> {
+        	new CadastroFuncionario();
+        });
         menuCadastros.add(itemFuncionarios);
         
         JMenu menuGerenciar = new JMenu("Gerenciar");
@@ -47,7 +53,19 @@ public class HomeAdmin extends JFrame {
         	new GerenciarTutor();
         });
         menuGerenciar.add(itemGerenciarTutores);
+        
+        JMenuItem itemGerenciarFuncionarios = new JMenuItem("Funcionários");
+        itemGerenciarFuncionarios.addActionListener(e -> {
+        	new GerenciarFuncionario();
+        });
+        menuGerenciar.add(itemGerenciarFuncionarios);
 
+        JMenuItem itemGerenciarUsuarios = new JMenuItem("Usuários");
+        itemGerenciarUsuarios.addActionListener(e -> {
+        	new GerenciarUsuario();
+        });
+        menuGerenciar.add(itemGerenciarUsuarios);
+        
         JMenu menuOperacoes = new JMenu("Operações");
         menuBar.add(menuOperacoes);
         
@@ -64,6 +82,13 @@ public class HomeAdmin extends JFrame {
         	new Login();
         });
         menuBar.add(itemLogoff);
+        
+        ImageIcon logoOriginal = new ImageIcon(getClass().getResource("/assets/logo.png"));
+        Image imagemRedimensionada = logoOriginal.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH);
+        ImageIcon logoRedimensionada = new ImageIcon(imagemRedimensionada);
+        
+        JLabel labelLogo = new JLabel(logoRedimensionada);
+        add(labelLogo, BorderLayout.CENTER);
         
         setVisible(true);
     }

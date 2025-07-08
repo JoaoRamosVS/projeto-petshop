@@ -55,7 +55,7 @@ public class GerenciarUsuario extends JFrame {
                 infoPanel.add(new JLabel("Perfil: " + usuario.getPerfil().getDescricao()));
                 
                 String status = "Ativo";
-                Color corStatus = new Color(0, 128, 0); // verde para Ativo
+                Color corStatus = new Color(0, 128, 0);
                 if (usuario.getAtivo().equalsIgnoreCase("N")) {
                     status = "Inativo";
                     corStatus = Color.RED;
@@ -89,7 +89,7 @@ public class GerenciarUsuario extends JFrame {
                         if (sucesso) {
                             JOptionPane.showMessageDialog(frameAtual, "Usuário " + (acao.equals("inativar") ? "inativado" : "reativado") + " com sucesso!");
                             frameAtual.dispose();
-                            new GerenciarUsuario(); 
+                            new GerenciarUsuario();
                         } else if (!acao.equals("reativar")) {
                             JOptionPane.showMessageDialog(frameAtual, "Ocorreu um erro ao " + acao + " o usuário.", "Erro", JOptionPane.ERROR_MESSAGE);
                         }

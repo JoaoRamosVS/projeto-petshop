@@ -15,8 +15,8 @@ import entities.Servico;
 
 public class AgendamentoDAO {
 
-    public boolean agendarServico(Agendamento agendamento) {
-        String sql = "INSERT INTO TB_AGENDAMENTO (SERVICO_ID, DT_AGENDAMENTO, CRIADOR_ID, PET_ID) VALUES (?, ?, ?, ?)";
+	public boolean agendarServico(Agendamento agendamento) {
+        String sql = "INSERT INTO TB_AGENDAMENTO (SERVICO_ID, DT_AGENDAMENTO, CRIADOR_ID, PET_ID, FUNC_ID) VALUES (?, ?, ?, ?, ?)";
 
         try (DBConnection db = new DBConnection();
              Connection conn = db.getConnection();
@@ -26,6 +26,7 @@ public class AgendamentoDAO {
             ps.setTimestamp(2, agendamento.getDataAgendamento());
             ps.setInt(3, agendamento.getCriador().getId());
             ps.setInt(4, agendamento.getPet().getId());
+            ps.setInt(5, agendamento.getFuncionario().getId());
 
             int linhasAfetadas = ps.executeUpdate();
             return linhasAfetadas > 0;
@@ -36,15 +37,16 @@ public class AgendamentoDAO {
         }
     }
     
-    public List<Timestamp> getHorariosOcupadosPorDia(LocalDate data) {
+    public List<Timestamp> getHorariosOcupadosPorDiaEFuncionario(LocalDate data, int funcionarioId) {
         List<Timestamp> horariosOcupados = new ArrayList<>();
-        String sql = "SELECT DT_AGENDAMENTO FROM TB_AGENDAMENTO WHERE DATE(DT_AGENDAMENTO) = ? AND STATUS = 'AGENDADO'";
+        String sql = "SELECT DT_AGENDAMENTO FROM TB_AGENDAMENTO WHERE DATE(DT_AGENDAMENTO) = ? AND FUNC_ID = ? AND STATUS = 'AGENDADO'";
 
         try (DBConnection db = new DBConnection();
              Connection conn = db.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setDate(1, java.sql.Date.valueOf(data));
+            ps.setInt(2, funcionarioId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     horariosOcupados.add(rs.getTimestamp("DT_AGENDAMENTO"));
@@ -96,7 +98,6 @@ public class AgendamentoDAO {
     }
 
     public boolean cancelarAgendamento(int agendamentoId) {
-        // Query para atualizar o status do agendamento para 'CANCELADO'
         String sql = "UPDATE TB_AGENDAMENTO SET STATUS = 'CANCELADO' WHERE ID = ?";
 
         try (DBConnection db = new DBConnection();

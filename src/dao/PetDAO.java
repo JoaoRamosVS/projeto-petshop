@@ -105,9 +105,11 @@ public class PetDAO {
                         pet.setDtNascimento(rs.getDate("DT_NASCIMENTO").toLocalDate());
                     }
                     pet.setPeso(rs.getBigDecimal("PESO"));
+                    pet.setObs(rs.getString("OBS"));
+                    pet.setOcorrencias(rs.getString("OCORRENCIAS"));
                     
                     int tamanhoId = rs.getInt("TAMANHO");
-                    for (TamanhoPetEnum t : TamanhoPetEnum.values()) {
+                    for (enums.TamanhoPetEnum t : enums.TamanhoPetEnum.values()) {
                         if (t.getId() == tamanhoId) {
                             pet.setTamanho(t);
                             break;
@@ -120,5 +122,23 @@ public class PetDAO {
             e.printStackTrace();
         }
         return listaPets;
+    }
+    public boolean atualizarInfoServico(Pet pet) {
+        String sql = "UPDATE TB_PETS SET PESO = ?, OBS = ?, OCORRENCIAS = ? WHERE ID = ?";
+
+        try (DBConnection db = new DBConnection();
+             Connection conn = db.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setBigDecimal(1, pet.getPeso());
+            ps.setString(2, pet.getObs());
+            ps.setString(3, pet.getOcorrencias());
+            ps.setInt(4, pet.getId());
+
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

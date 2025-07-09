@@ -203,4 +203,35 @@ public class FuncionarioDAO {
 			return false;
 		}
 	}
+	public Funcionario buscarFuncionarioPorUsuarioId(int usuarioId) {
+	    Funcionario funcionario = null;
+	    String sql = "SELECT * FROM TB_FUNCIONARIOS WHERE USUARIO_ID = ?";
+	    
+	    try (DBConnection db = new DBConnection();
+	         Connection conn = db.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+	        ps.setInt(1, usuarioId);
+	        ResultSet rs = ps.executeQuery();
+
+	        if (rs.next()) {
+	            funcionario = new Funcionario();
+	            funcionario.setId(rs.getInt("ID"));
+	            funcionario.setNome(rs.getString("NOME"));
+	            funcionario.setCpf(rs.getString("CPF"));
+	            funcionario.setEndereco(rs.getString("ENDERECO"));
+	            funcionario.setBairro(rs.getString("BAIRRO"));
+	            funcionario.setCidade(rs.getString("CIDADE"));
+	            funcionario.setUf(rs.getString("UF"));
+	            funcionario.setCep(rs.getString("CEP"));
+	            funcionario.setTelefone(rs.getString("TELEFONE"));
+	            funcionario.setCargo(rs.getString("CARGO"));
+	            funcionario.setSalario(rs.getBigDecimal("SALARIO"));
+	        }
+	    } catch (SQLException e) {
+	        System.err.println("Erro ao buscar funcionário por ID de usuário: " + e.getMessage());
+	        e.printStackTrace();
+	    }
+	    return funcionario;
+	}
 }

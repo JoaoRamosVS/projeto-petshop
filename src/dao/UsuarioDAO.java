@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import database.DBConnection;
 import entities.Perfil;
 import entities.Usuario;
@@ -172,5 +174,52 @@ public class UsuarioDAO {
 			System.err.println("Ocorreu um erro: " + e.getMessage());
 			return null;
 		}
+	}
+	public boolean atualizarCredenciais(int usuarioId, String novoEmail, String novaSenha) {
+	    StringBuilder sql = new StringBuilder("UPDATE TB_USUARIOS SET ");
+	    boolean updateEmail = novoEmail != null && !novoEmail.isEmpty();
+	    boolean updateSenha = novaSenha != null && !novaSenha.isEmpty();
+
+	    if (!updateEmail && !updateSenha) {
+	        return true; 
+	    }
+
+	    if (updateEmail) {
+	        sql.append("EMAIL = ?");
+	    }
+
+	    if (updateEmail && updateSenha) {
+	        sql.append(", ");
+	    }
+
+	    if (updateSenha) {
+	        sql.append("SENHA = ?");
+	    }
+
+	    sql.append(" WHERE ID = ?");
+
+	    try (DBConnection db = new DBConnection();
+	         Connection conn = db.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+
+	        int paramIndex = 1;
+	        if (updateEmail) {
+	            ps.setString(paramIndex++, novoEmail);
+	        }
+	        if (updateSenha) {
+	            ps.setString(paramIndex++, novaSenha);
+	        }
+	        ps.setInt(paramIndex, usuarioId);
+
+	        return ps.executeUpdate() > 0;
+
+	    } catch (SQLException e) {
+	        if (e.getErrorCode() == 1062) { 
+	            JOptionPane.showMessageDialog(null, "Este e-mail já está em uso por outra conta.", "E-mail Duplicado", JOptionPane.ERROR_MESSAGE);
+	        } else {
+	            e.printStackTrace();
+	        }
+	        return false;
+	    }
 	}
 }

@@ -13,6 +13,7 @@ import entities.Agendamento;
 import entities.Funcionario;
 import entities.Pet;
 import entities.Servico;
+import entities.Tutor;
 
 public class AgendamentoDAO {
 
@@ -116,5 +117,89 @@ public class AgendamentoDAO {
 			e.printStackTrace();
 			return false;
 		}
+	}
+	public List<Agendamento> listarAgendamentosPorFuncionario(int funcionarioId) {
+	    List<Agendamento> agendamentos = new ArrayList<>();
+	    String sql = "SELECT a.ID AS AG_ID, a.DT_AGENDAMENTO, a.STATUS, " +
+	                 "p.ID AS PET_ID, p.NOME AS PET_NOME, p.RACA, p.DT_NASCIMENTO, p.TAMANHO, p.PESO, p.OBS, p.OCORRENCIAS, " +
+	                 "s.DESCRICAO AS SERVICO_DESC, " +
+	                 "t.NOME AS TUTOR_NOME, t.TELEFONE AS TUTOR_TELEFONE " +
+	                 "FROM TB_AGENDAMENTO a " +
+	                 "JOIN TB_PETS p ON a.PET_ID = p.ID " +
+	                 "JOIN TB_TUTORES t ON p.TUTOR_ID = t.ID " +
+	                 "JOIN TB_SERVICOS s ON a.SERVICO_ID = s.ID " +
+	                 "WHERE a.FUNC_ID = ? AND a.STATUS != 'CANCELADO' " +
+	                 "ORDER BY " +
+	                 "  CASE a.STATUS " +
+	                 "    WHEN 'EM ANDAMENTO' THEN 1 " +
+	                 "    WHEN 'AGENDADO' THEN 2 " +
+	                 "    WHEN 'CONCLUÍDO' THEN 3 " +
+	                 "    ELSE 4 " +
+	                 "  END, " +
+	                 "a.DT_AGENDAMENTO DESC";
+
+	    try (DBConnection db = new DBConnection();
+	         Connection conn = db.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+	        ps.setInt(1, funcionarioId);
+	        ResultSet rs = ps.executeQuery();
+
+	        while (rs.next()) {
+	            Agendamento ag = new Agendamento();
+	            ag.setId(rs.getInt("AG_ID"));
+	            ag.setDataAgendamento(rs.getTimestamp("DT_AGENDAMENTO"));
+	            ag.setStatus(rs.getString("STATUS"));
+
+	            Pet pet = new Pet();
+	            pet.setId(rs.getInt("PET_ID"));
+	            pet.setNome(rs.getString("PET_NOME"));
+	            pet.setRaca(rs.getString("RACA"));
+	            if (rs.getDate("DT_NASCIMENTO") != null) {
+	                pet.setDtNascimento(rs.getDate("DT_NASCIMENTO").toLocalDate());
+	            }
+	            pet.setPeso(rs.getBigDecimal("PESO"));
+	            pet.setObs(rs.getString("OBS"));
+	            pet.setOcorrencias(rs.getString("OCORRENCIAS"));
+
+	            int tamanhoId = rs.getInt("TAMANHO");
+	            for (enums.TamanhoPetEnum t : enums.TamanhoPetEnum.values()) {
+	                if (t.getId() == tamanhoId) {
+	                    pet.setTamanho(t);
+	                    break;
+	                }
+	            }
+	            
+	            ag.setPet(pet);
+	            
+	            Tutor tutor = new Tutor();
+	            tutor.setNome(rs.getString("TUTOR_NOME"));
+	            tutor.setTelefone(rs.getString("TUTOR_TELEFONE"));
+	            pet.setTutor(tutor);
+
+	            Servico servico = new Servico();
+	            servico.setDescricao(rs.getString("SERVICO_DESC"));
+	            ag.setServico(servico);
+	            
+	            agendamentos.add(ag);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return agendamentos;
+	}
+
+	public boolean atualizarStatusAgendamento(int agendamentoId, String novoStatus) {
+	    String sql = "UPDATE TB_AGENDAMENTO SET STATUS = ? WHERE ID = ?";
+	    try (DBConnection db = new DBConnection();
+	         Connection conn = db.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+	        ps.setString(1, novoStatus);
+	        ps.setInt(2, agendamentoId);
+	        return ps.executeUpdate() > 0;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
 	}
 }

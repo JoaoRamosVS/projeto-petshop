@@ -79,7 +79,7 @@ public class GerenciarMeusPets extends JFrame {
             BorderFactory.createLineBorder(Color.GRAY, 1, true),
             new EmptyBorder(10, 10, 10, 10)
         ));
-        card.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
+        card.setMaximumSize(new Dimension(Integer.MAX_VALUE, 150));
 
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
@@ -95,11 +95,18 @@ public class GerenciarMeusPets extends JFrame {
         infoPanel.add(new JLabel("Idade: " + idade + " anos | Peso: " + pet.getPeso() + "kg"));
         infoPanel.add(new JLabel("Tamanho: " + pet.getTamanho().getDescricao()));
         
+        if (pet.getObs() != null && !pet.getObs().trim().isEmpty()) {
+            infoPanel.add(new JLabel(" "));
+            JLabel lblObs = new JLabel("Observações: " + pet.getObs());
+            lblObs.setFont(new Font("Arial", Font.ITALIC, 12));
+            infoPanel.add(lblObs);
+        }
+        
         card.add(infoPanel, BorderLayout.CENTER);
 
         JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton btnEditar = new JButton("Editar");
-        btnEditar.addActionListener(e -> {
+        btnEditar.addActionListener(_ -> {
             new EdicaoPet(pet);
             GerenciarMeusPets.this.dispose();
         });

@@ -14,9 +14,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import dao.FuncionarioDAO;
 import dao.UsuarioDAO;
+import entities.Funcionario;
 import entities.Usuario;
 import screens.admins.HomeAdmin;
+import screens.funcionarios.HomeFuncionario;
 import screens.tutores.HomeTutor;
 
 public class Login extends JFrame {
@@ -79,7 +82,7 @@ public class Login extends JFrame {
             }
         });
 
-        botaoEntrar.addActionListener(esql -> {
+        botaoEntrar.addActionListener(e -> {
             String email = usuario.getText();
             String pass = new String(senha.getPassword());
 
@@ -87,17 +90,35 @@ public class Login extends JFrame {
             Usuario usuarioAutenticado = usuarioDAO.autenticarUsuario(email, pass);
             
             if (usuarioAutenticado != null) {
-                JOptionPane.showMessageDialog(this, "Login realizado com sucesso!");
                 this.dispose(); 
-
-                String perfilDescricao = usuarioAutenticado.getPerfil().getDescricao();
+                String perfil = usuarioAutenticado.getPerfil().getDescricao();
                 
-                if (perfilDescricao.equalsIgnoreCase("Administrador")) {
-                    new HomeAdmin();
-                } else {
-                	new HomeTutor(usuarioAutenticado); 
+                switch (perfil.toLowerCase()) {
+                    case "administrador":
+                        JOptionPane.showMessageDialog(this, "Login de Administrador realizado com sucesso!");
+                        new HomeAdmin();
+                        break;
+                    case "tutor":
+                        JOptionPane.showMessageDialog(this, "Login de Tutor realizado com sucesso!");
+                        new HomeTutor(usuarioAutenticado);
+                        break;
+                    case "funcionario":
+                        FuncionarioDAO funcDAO = new FuncionarioDAO();
+                        Funcionario funcLogado = funcDAO.buscarFuncionarioPorUsuarioId(usuarioAutenticado.getId());
+                        
+                        if (funcLogado != null) {
+                            funcLogado.setUsuario(usuarioAutenticado);
+                            new HomeFuncionario(funcLogado);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Erro: dados de funcionário não encontrados para este usuário.", "Erro de Login", JOptionPane.ERROR_MESSAGE);
+                            new Login();
+                        }
+                        break;
+                    default:
+                        JOptionPane.showMessageDialog(this, "Perfil de usuário desconhecido.", "Erro de Login", JOptionPane.ERROR_MESSAGE);
+                        new Login();
+                        break;
                 }
-
             } else {
                 JOptionPane.showMessageDialog(this, "Usuário ou senha inválidos.", "Erro de Login", JOptionPane.ERROR_MESSAGE);
             }

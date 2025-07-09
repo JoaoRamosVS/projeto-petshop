@@ -66,6 +66,12 @@ public class GerenciarUsuario extends JFrame {
                 
                 JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
                 
+                JButton btnEditar = new JButton("Editar");
+                btnEditar.addActionListener(e -> {
+                    new EdicaoUsuario(usuario.getId());
+                    frameAtual.dispose();
+                });
+
                 String textoBotao = usuario.getAtivo().equalsIgnoreCase("S") ? "Inativar" : "Reativar";
                 JButton btnMudarStatus = new JButton(textoBotao);
                 
@@ -78,12 +84,14 @@ public class GerenciarUsuario extends JFrame {
                             JOptionPane.QUESTION_MESSAGE);
                             
                     if (confirma == JOptionPane.YES_OPTION) {
-                        boolean sucesso;
+                        boolean sucesso = false;
+                        
                         if (usuario.getAtivo().equalsIgnoreCase("S")) {
                             sucesso = usuarioDAO.inativarUsuario(usuario.getEmail());
-                        } else {
-                            sucesso = false;
-                            JOptionPane.showMessageDialog(frameAtual, "A funcionalidade 'Reativar' ainda não foi implementada.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                        
+                        if (usuario.getAtivo().equalsIgnoreCase("N")) {
+                        	sucesso = usuarioDAO.reativarUsuario(usuario.getEmail());
                         }
                         
                         if (sucesso) {
@@ -96,6 +104,7 @@ public class GerenciarUsuario extends JFrame {
                     }
                 });
                 
+                actionPanel.add(btnEditar);
                 actionPanel.add(btnMudarStatus);
 
                 usuarioPanel.add(infoPanel, BorderLayout.CENTER);

@@ -71,6 +71,74 @@ public class UsuarioDAO {
 		return listaDeUsuarios;
 	}
 	
+	public Usuario buscarUsuarioPorId(int id) {
+	    Usuario usuario = null;
+	    String sql = "SELECT TU.ID, TU.EMAIL, TU.ATIVO, TP.ID as PERFIL_ID, TP.DESCRICAO FROM TB_USUARIOS TU JOIN TB_PERFIS TP ON TU.PERFIL_ID = TP.ID WHERE TU.ID = ?";
+	    try (DBConnection db = new DBConnection();
+	         Connection conn = db.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+	        ps.setInt(1, id);
+	        ResultSet rs = ps.executeQuery();
+	        if (rs.next()) {
+	            usuario = new Usuario();
+	            Perfil perfil = new Perfil();
+	            usuario.setId(rs.getInt("ID"));
+	            usuario.setEmail(rs.getString("EMAIL"));
+	            usuario.setAtivo(rs.getString("ATIVO"));
+	            perfil.setId(rs.getInt("PERFIL_ID"));
+	            perfil.setDescricao(rs.getString("DESCRICAO"));
+	            usuario.setPerfil(perfil);
+
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return usuario;
+	}
+
+	public boolean atualizarUsuario(Usuario usuario) {
+		StringBuilder sqlBuilder = new StringBuilder("UPDATE TB_USUARIOS SET EMAIL = ?, ATIVO = ?");
+        if (usuario.getSenha() != null && !usuario.getSenha().isBlank()) {
+            sqlBuilder.append(", SENHA = ?");
+        }
+        sqlBuilder.append(" WHERE ID = ?");
+        
+	    try (DBConnection db = new DBConnection();
+	         Connection conn = db.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sqlBuilder.toString())) {
+	    	
+	    	int paramIndex = 1;
+	        ps.setString(paramIndex++, usuario.getEmail());
+	        ps.setString(paramIndex++, usuario.getAtivo());
+	        if (usuario.getSenha() != null && !usuario.getSenha().isBlank()) {
+	            ps.setString(paramIndex++, usuario.getSenha());
+	        }
+	        ps.setInt(paramIndex++, usuario.getId());
+	        
+	        int linhasAfetadas = ps.executeUpdate();
+	        return linhasAfetadas > 0;
+	        
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
+	
+	public boolean reativarUsuario(String email) {
+	    try (DBConnection db = new DBConnection()) {
+	    	Connection conn = db.getConnection();
+	    	PreparedStatement query = conn.prepareStatement("UPDATE TB_USUARIOS SET ATIVO = 'S' WHERE EMAIL = ?");
+	        query.setString(1, email);
+
+	        int linhasAfetadas = query.executeUpdate();
+	        return linhasAfetadas > 0;
+
+	    } catch (Exception e) {
+	        System.err.println("Ocorreu um erro: " + e.getMessage());
+	        return false;
+	    }
+	}
+	
 	public boolean inativarUsuario(String email) {
 	    try (DBConnection db = new DBConnection()) {
 	    	Connection conn = db.getConnection();

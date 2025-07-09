@@ -75,10 +75,9 @@ public class HomeTutor extends JFrame {
         });
         add(btnMeusAgendamentos);
         
-        // --- BOTÃO SAIR ADICIONADO ---
         JButton btnSair = new JButton("Sair");
         btnSair.setFont(new Font("Arial", Font.BOLD, 14));
-        btnSair.setBackground(new Color(220, 53, 69)); // Cor vermelha para destaque
+        btnSair.setBackground(new Color(220, 53, 69));
         btnSair.setForeground(Color.WHITE);
         btnSair.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnSair.setBounds(350, 480, 100, 40);

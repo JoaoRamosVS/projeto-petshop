@@ -19,6 +19,7 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import dao.AgendamentoDAO;
 import entities.Agendamento;
+import entities.Funcionario;
 import entities.Usuario;
 
 public class MeusAgendamentos extends JFrame {
@@ -76,6 +77,11 @@ public class MeusAgendamentos extends JFrame {
         
         LocalDateTime dataHora = agendamento.getDataAgendamento().toLocalDateTime();
         infoPanel.add(new JLabel("Data: " + dataHora.format(formatador)));
+        
+        Funcionario func = agendamento.getFuncionario();
+        if (func != null && func.getNome() != null) {
+            infoPanel.add(new JLabel("Profissional: " + func.getNome()));
+        }
 
         JLabel lblStatus = new JLabel("Status: " + agendamento.getStatus());
         configurarCorStatus(lblStatus, agendamento.getStatus(), dataHora);

@@ -5,13 +5,15 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-
+import java.time.format.DateTimeParseException;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
@@ -28,12 +30,13 @@ public class EdicaoPet extends JFrame {
     private JTextField txtRaca = new JTextField();
     private JFormattedTextField txtDtNascimento;
     private JTextField txtPeso = new JTextField();
+    private JTextArea txtObservacoes = new JTextArea();
 
     public EdicaoPet(Pet pet) {
         this.pet = pet;
 
         setTitle("Editando Pet: " + pet.getNome());
-        setSize(500, 480);
+        setSize(500, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(null);
@@ -44,7 +47,6 @@ public class EdicaoPet extends JFrame {
             txtDtNascimento = new JFormattedTextField(mascaraData);
         } catch (ParseException e) {
             e.printStackTrace();
-            txtDtNascimento = new JFormattedTextField();
         }
 
         preencherCampos();
@@ -62,9 +64,21 @@ public class EdicaoPet extends JFrame {
         comboTamanho.setSelectedItem(pet.getTamanho());
         comboTamanho.setBounds(50, 290, 380, 30);
         add(comboTamanho);
+
+        JLabel lblObservacoes = new JLabel("Observações:");
+        lblObservacoes.setBounds(50, 330, 150, 20);
+        add(lblObservacoes);
+        
+        txtObservacoes.setFont(new Font("Arial", Font.PLAIN, 14));
+        txtObservacoes.setLineWrap(true);
+        txtObservacoes.setWrapStyleWord(true);
+        
+        JScrollPane scrollObservacoes = new JScrollPane(txtObservacoes);
+        scrollObservacoes.setBounds(50, 350, 380, 100);
+        add(scrollObservacoes);
         
         JButton btnSalvar = new JButton("Salvar Alterações");
-        btnSalvar.setBounds(160, 350, 180, 40);
+        btnSalvar.setBounds(160, 470, 180, 40);
         btnSalvar.setFont(new Font("Arial", Font.BOLD, 16));
         add(btnSalvar);
         
@@ -81,17 +95,30 @@ public class EdicaoPet extends JFrame {
             txtDtNascimento.setText(pet.getDtNascimento().format(formatador));
         }
         txtPeso.setText(pet.getPeso().toString());
+        txtObservacoes.setText(pet.getObs());
     }
     
     private void salvarAlteracoesPet() {
         try {
             DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate dataNascimento;
+            try {
+                dataNascimento = LocalDate.parse(txtDtNascimento.getText(), formatador);
+                if (dataNascimento.isAfter(LocalDate.now())) {
+                    JOptionPane.showMessageDialog(this, "A data de nascimento do pet não pode ser uma data futura.", "Data Inválida", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            } catch (DateTimeParseException ex) {
+                JOptionPane.showMessageDialog(this, "Por favor, insira uma data de nascimento válida no formato dd/mm/aaaa.", "Data Inválida", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             
             pet.setNome(txtNome.getText());
             pet.setRaca(txtRaca.getText());
-            pet.setDtNascimento(LocalDate.parse(txtDtNascimento.getText(), formatador));
+            pet.setDtNascimento(dataNascimento);
             pet.setPeso(new BigDecimal(txtPeso.getText()));
             pet.setTamanho((TamanhoPetEnum) comboTamanho.getSelectedItem());
+            pet.setObs(txtObservacoes.getText());
             
             PetDAO petDAO = new PetDAO();
             boolean sucesso = petDAO.atualizarPet(pet);

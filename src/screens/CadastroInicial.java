@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
@@ -108,6 +109,18 @@ public class CadastroInicial extends JFrame {
         
         btnSalvar.addActionListener(e -> {
             try {
+                DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                LocalDate dataNascimento;
+                try {
+                    dataNascimento = LocalDate.parse(txtDtNascPet.getText(), formatador);
+                    if (dataNascimento.isAfter(LocalDate.now())) {
+                        JOptionPane.showMessageDialog(this, "A data de nascimento do pet não pode ser uma data futura.", "Data Inválida", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                } catch (DateTimeParseException ex) {
+                    JOptionPane.showMessageDialog(this, "Por favor, insira uma data de nascimento válida no formato dd/mm/aaaa.", "Data Inválida", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 Usuario novoUsuario = new Usuario();
                 novoUsuario.setEmail(txtEmail.getText());
                 novoUsuario.setSenha(txtSenha.getText());
@@ -127,8 +140,7 @@ public class CadastroInicial extends JFrame {
                 novoPet.setRaca(txtRacaPet.getText());
                 novoPet.setTamanho((TamanhoPetEnum) comboTamanhoPet.getSelectedItem());
                 
-                DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                novoPet.setDtNascimento(LocalDate.parse(txtDtNascPet.getText(), formatador));
+                novoPet.setDtNascimento(dataNascimento); 
                 novoPet.setPeso(new BigDecimal(txtPesoPet.getText()));
 
                 TutorDAO tutorDAO = new TutorDAO();
@@ -138,10 +150,10 @@ public class CadastroInicial extends JFrame {
                     JOptionPane.showMessageDialog(this, "Conta criada com sucesso!");
                     this.dispose();
                 } else {
-                    JOptionPane.showMessageDialog(this, "Erro ao criar conta.", "Erro", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Erro ao criar conta. Verifique se o e-mail já está em uso.", "Erro", JOptionPane.ERROR_MESSAGE);
                 }
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Erro: " + ex.getMessage(), "Erro de Cadastro", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Erro ao processar o formulário. Verifique se todos os campos estão preenchidos corretamente.", "Erro de Cadastro", JOptionPane.ERROR_MESSAGE);
             }
         });
 

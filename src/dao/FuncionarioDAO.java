@@ -35,10 +35,52 @@ public class FuncionarioDAO {
 				listaDeFuncionarios.add(funcionario);
 			}
 		} catch (SQLException e) {
-			System.err.println("Erro ao buscar tutores: " + e.getMessage());
+			System.err.println("Erro ao buscar funcionários: " + e.getMessage());
 			e.printStackTrace();
 		}
 		return listaDeFuncionarios;
+	}
+	
+	public List<Funcionario> listarTosadores() {
+		List<Funcionario> listaDeTosadores = new ArrayList<>();
+
+		try (DBConnection db = new DBConnection();
+				Connection conn = db.getConnection();
+				PreparedStatement ps = conn.prepareStatement(
+						"SELECT TF.ID, TF.NOME FROM TB_FUNCIONARIOS TF JOIN TB_USUARIOS TU ON TF.USUARIO_ID = TU.ID WHERE TU.ATIVO = 'S' AND TF.CARGO = 'Tosador' ORDER BY NOME;");
+				ResultSet rs = ps.executeQuery()) {
+			while (rs.next()) {
+				Funcionario funcionario = new Funcionario();
+				funcionario.setId(rs.getInt("ID"));
+				funcionario.setNome(rs.getString("NOME"));
+				listaDeTosadores.add(funcionario);
+			}
+		} catch (SQLException e) {
+			System.err.println("Erro ao buscar funcionários: " + e.getMessage());
+			e.printStackTrace();
+		}
+		return listaDeTosadores;
+	}
+	
+	public List<Funcionario> listarVeterinarios() {
+		List<Funcionario> listaDeVeterinarios = new ArrayList<>();
+
+		try (DBConnection db = new DBConnection();
+				Connection conn = db.getConnection();
+				PreparedStatement ps = conn.prepareStatement(
+						"SELECT TF.ID, TF.NOME FROM TB_FUNCIONARIOS TF JOIN TB_USUARIOS TU ON TF.USUARIO_ID = TU.ID WHERE TU.ATIVO = 'S' AND TF.CARGO = 'Veterinário' ORDER BY NOME;");
+				ResultSet rs = ps.executeQuery()) {
+			while (rs.next()) {
+				Funcionario funcionario = new Funcionario();
+				funcionario.setId(rs.getInt("ID"));
+				funcionario.setNome(rs.getString("NOME"));
+				listaDeVeterinarios.add(funcionario);
+			}
+		} catch (SQLException e) {
+			System.err.println("Erro ao buscar funcionários: " + e.getMessage());
+			e.printStackTrace();
+		}
+		return listaDeVeterinarios;
 	}
 
 	public Funcionario buscarFuncionarioPorId(int id) {

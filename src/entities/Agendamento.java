@@ -12,11 +12,12 @@ public class Agendamento {
     private Servico servico;
     private Usuario criador;
     private Pet pet;
+    private Funcionario funcionario;
 
     public Agendamento() {
     }
 
-    public Agendamento(Integer id, Timestamp dataCriacao, Timestamp dataAgendamento, String descricao, String obs, String status, Servico servico, Usuario criador, Pet pet) {
+    public Agendamento(Integer id, Timestamp dataCriacao, Timestamp dataAgendamento, String descricao, String obs, String status, Servico servico, Usuario criador, Pet pet, Funcionario funcionario) {
         this.id = id;
         this.dataCriacao = dataCriacao;
         this.dataAgendamento = dataAgendamento;
@@ -26,6 +27,7 @@ public class Agendamento {
         this.servico = servico;
         this.criador = criador;
         this.pet = pet;
+        this.funcionario = funcionario;
     }
 
     public Integer getId() {
@@ -98,5 +100,13 @@ public class Agendamento {
 
     public void setPet(Pet pet) {
         this.pet = pet;
+    }
+
+    public Funcionario getFuncionario() {
+        return funcionario;
+    }
+
+    public void setFuncionario(Funcionario funcionario) {
+        this.funcionario = funcionario;
     }
 }

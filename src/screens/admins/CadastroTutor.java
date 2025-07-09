@@ -7,6 +7,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 import dao.TutorDAO;
@@ -21,7 +22,7 @@ public class CadastroTutor extends JFrame {
     private JFormattedTextField txtTelefone;
     private JFormattedTextField txtCep;
     private JTextField txtEmail = new JTextField();
-    private JTextField txtSenha = new JTextField();
+    private JPasswordField txtSenha = new JPasswordField();
 
     public CadastroTutor() {
         setTitle("Cadastro de Tutor (Admin)");
@@ -59,7 +60,7 @@ public class CadastroTutor extends JFrame {
             String telefone = txtTelefone.getText();
             String cep = txtCep.getText();
             String email = txtEmail.getText();
-            String senha = txtSenha.getText();
+            String senha = new String(txtSenha.getPassword());
 
             Usuario novoUsuario = new Usuario();
             novoUsuario.setEmail(email);

@@ -10,6 +10,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
@@ -25,7 +26,7 @@ public class CadastroFuncionario extends JFrame {
     private JFormattedTextField txtTelefone;
     private JFormattedTextField txtCep;
     private JTextField txtEmail = new JTextField();
-    private JTextField txtSenha = new JTextField();
+    private JPasswordField txtSenha = new JPasswordField();
     private JComboBox<String> comboCargo;
     private JTextField txtSalario = new JTextField();
     
@@ -85,7 +86,7 @@ public class CadastroFuncionario extends JFrame {
                 String telefone = txtTelefone.getText();
                 String cep = txtCep.getText();
                 String email = txtEmail.getText();
-                String senha = txtSenha.getText();
+                String senha = new String(txtSenha.getPassword());
                 String cargo = (String) comboCargo.getSelectedItem();
                 BigDecimal salario = new BigDecimal(txtSalario.getText());
 

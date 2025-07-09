@@ -12,6 +12,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
@@ -34,7 +35,7 @@ public class CadastroInicial extends JFrame {
     private JTextField txtUf = new JTextField();
     
     private JTextField txtEmail = new JTextField();
-    private JTextField txtSenha = new JTextField();
+    private JPasswordField txtSenha = new JPasswordField();
     
     private JTextField txtNomePet = new JTextField();
     private JTextField txtRacaPet = new JTextField();
@@ -123,7 +124,7 @@ public class CadastroInicial extends JFrame {
                 }
                 Usuario novoUsuario = new Usuario();
                 novoUsuario.setEmail(txtEmail.getText());
-                novoUsuario.setSenha(txtSenha.getText());
+                novoUsuario.setSenha(new String(txtSenha.getPassword()));
                 
                 Tutor novoTutor = new Tutor();
                 novoTutor.setNome(txtNomeTutor.getText());

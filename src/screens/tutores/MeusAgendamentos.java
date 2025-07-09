@@ -1,4 +1,4 @@
-package screens;
+package screens.tutores;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

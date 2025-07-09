@@ -1,4 +1,4 @@
-package screens;
+package screens.tutores;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -73,7 +73,7 @@ public class AgendamentoServico extends JFrame {
         scrollHorarios.setBounds(50, 230, 480, 250);
         add(scrollHorarios);
 
-        btnVerificar.addActionListener(_ -> atualizarHorariosDisponiveis());
+        btnVerificar.addActionListener(e -> atualizarHorariosDisponiveis());
 
         setVisible(true);
     }
@@ -85,7 +85,13 @@ public class AgendamentoServico extends JFrame {
         LocalDate dataSelecionada;
         try {
             dataSelecionada = LocalDate.parse(txtData.getText(), formatadorData);
-        } catch (Exception e) {
+            
+            if(dataSelecionada.isBefore(LocalDate.now())) {
+            	JOptionPane.showMessageDialog(this, "Por favor, insira uma data futura ou igual a data de hoje.", "Erro de Data", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        } 
+        catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Por favor, insira uma data válida no formato dd/mm/aaaa.", "Erro de Data", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -124,7 +130,7 @@ public class AgendamentoServico extends JFrame {
         
         if (disponivel) {
             botao.setBackground(new Color(210, 255, 210));
-            botao.addActionListener(_ -> confirmarAgendamento(horario));
+            botao.addActionListener(e -> confirmarAgendamento(horario));
         } else {
             botao.setBackground(new Color(255, 200, 200));
             botao.setEnabled(false);

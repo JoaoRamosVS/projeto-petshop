@@ -1,4 +1,4 @@
-package screens;
+package screens.tutores;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -11,6 +11,7 @@ import java.awt.Font;
 import dao.TutorDAO;
 import entities.Tutor;
 import entities.Usuario;
+import screens.admins.EdicaoTutor;
 
 public class HomeTutor extends JFrame {
     private static final long serialVersionUID = 1L;
@@ -35,7 +36,7 @@ public class HomeTutor extends JFrame {
 
         JButton btnMeusDados = new JButton("Meus Dados");
         configurarBotao(btnMeusDados, 125, 150, 250, 100);
-        btnMeusDados.addActionListener(_ -> {
+        btnMeusDados.addActionListener(e -> {
             TutorDAO tutorDAO = new TutorDAO();
             Tutor tutor = tutorDAO.buscarTutorPorUsuarioId(usuarioLogado.getId());
             if (tutor != null) {
@@ -48,7 +49,7 @@ public class HomeTutor extends JFrame {
 
         JButton btnMeusPets = new JButton("Meus Pets");
         configurarBotao(btnMeusPets, 425, 150, 250, 100);
-        btnMeusPets.addActionListener(_ -> {
+        btnMeusPets.addActionListener(e -> {
             TutorDAO tutorDAO = new TutorDAO();
             Tutor tutor = tutorDAO.buscarTutorPorUsuarioId(usuarioLogado.getId());
             if (tutor != null) {
@@ -61,14 +62,14 @@ public class HomeTutor extends JFrame {
 
         JButton btnAgendarServico = new JButton("Agendar Serviço");
         configurarBotao(btnAgendarServico, 125, 300, 250, 100);
-        btnAgendarServico.addActionListener(_ -> {
+        btnAgendarServico.addActionListener(e -> {
             new AgendamentoServico(usuarioLogado);
         });
         add(btnAgendarServico);
         
         JButton btnMeusAgendamentos = new JButton("Meus Agendamentos");
         configurarBotao(btnMeusAgendamentos, 425, 300, 250, 100);
-        btnMeusAgendamentos.addActionListener(_ -> {
+        btnMeusAgendamentos.addActionListener(e -> {
             new MeusAgendamentos(usuarioLogado);
         });
         add(btnMeusAgendamentos);

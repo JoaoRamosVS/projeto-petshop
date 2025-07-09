@@ -29,7 +29,7 @@ public class DBConnection implements AutoCloseable {
 		this.setPort	("3306");
 		this.setSchema	("DB_PETSHOP");
 		this.setUser	("root");
-		this.setPassword("1234");
+		this.setPassword("");
 		this.doConnection();
 	}
 	

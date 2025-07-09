@@ -55,6 +55,7 @@ public class AgendamentoDAO {
         }
         return horariosOcupados;
     }
+    
     public List<Agendamento> listarAgendamentosPorUsuario(int usuarioId) {
         List<Agendamento> agendamentos = new ArrayList<>();
         // Query que junta Agendamento, Pet e Serviço para buscar todas as informações necessárias

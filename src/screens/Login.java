@@ -13,8 +13,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
 import dao.UsuarioDAO;
 import entities.Usuario;
+import screens.admins.HomeAdmin;
+import screens.tutores.HomeTutor;
 
 public class Login extends JFrame {
     private static final long serialVersionUID = 1L;
@@ -72,11 +75,11 @@ public class Login extends JFrame {
         lblCadastreSe.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                new CadastroTutor();
+                new CadastroInicial();
             }
         });
 
-        botaoEntrar.addActionListener(_ -> {
+        botaoEntrar.addActionListener(esql -> {
             String email = usuario.getText();
             String pass = new String(senha.getPassword());
 

@@ -1,4 +1,4 @@
-package screens;
+package screens.admins;
 
 import java.awt.Font;
 import javax.swing.JButton;

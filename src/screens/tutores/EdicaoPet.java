@@ -1,4 +1,4 @@
-package screens;
+package screens.tutores;
 
 import java.awt.Font;
 import java.math.BigDecimal;
@@ -68,7 +68,7 @@ public class EdicaoPet extends JFrame {
         btnSalvar.setFont(new Font("Arial", Font.BOLD, 16));
         add(btnSalvar);
         
-        btnSalvar.addActionListener(_ -> salvarAlteracoesPet());
+        btnSalvar.addActionListener(e -> salvarAlteracoesPet());
 
         setVisible(true);
     }

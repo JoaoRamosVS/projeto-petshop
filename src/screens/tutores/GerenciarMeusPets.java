@@ -1,4 +1,4 @@
-package screens;
+package screens.tutores;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -19,6 +19,7 @@ import javax.swing.border.EmptyBorder;
 import dao.PetDAO;
 import entities.Pet;
 import entities.Tutor;
+import screens.admins.CadastroPet;
 
 public class GerenciarMeusPets extends JFrame {
     private static final long serialVersionUID = 1L;
@@ -42,7 +43,7 @@ public class GerenciarMeusPets extends JFrame {
 
         JButton btnAdicionarPet = new JButton("+ Adicionar Novo Pet");
         btnAdicionarPet.setFont(new Font("Arial", Font.BOLD, 12));
-        btnAdicionarPet.addActionListener(_ -> {
+        btnAdicionarPet.addActionListener(e -> {
         	new CadastroPet(tutorLogado);
             this.dispose(); 
         });
@@ -98,7 +99,7 @@ public class GerenciarMeusPets extends JFrame {
 
         JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton btnEditar = new JButton("Editar");
-        btnEditar.addActionListener(_ -> {
+        btnEditar.addActionListener(e -> {
             new EdicaoPet(pet);
             GerenciarMeusPets.this.dispose();
         });

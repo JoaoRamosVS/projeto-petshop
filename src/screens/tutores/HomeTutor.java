@@ -11,6 +11,7 @@ import java.awt.Font;
 import dao.TutorDAO;
 import entities.Tutor;
 import entities.Usuario;
+import screens.Login;
 import screens.admins.EdicaoTutor;
 
 public class HomeTutor extends JFrame {
@@ -73,6 +74,19 @@ public class HomeTutor extends JFrame {
             new MeusAgendamentos(usuarioLogado);
         });
         add(btnMeusAgendamentos);
+        
+        // --- BOTÃO SAIR ADICIONADO ---
+        JButton btnSair = new JButton("Sair");
+        btnSair.setFont(new Font("Arial", Font.BOLD, 14));
+        btnSair.setBackground(new Color(220, 53, 69)); // Cor vermelha para destaque
+        btnSair.setForeground(Color.WHITE);
+        btnSair.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnSair.setBounds(350, 480, 100, 40);
+        btnSair.addActionListener(e -> {
+            dispose();
+            new Login();
+        });
+        add(btnSair);
         
         setVisible(true);
     }

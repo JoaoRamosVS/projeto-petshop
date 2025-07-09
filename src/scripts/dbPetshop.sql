@@ -85,7 +85,18 @@ CREATE TABLE TB_AGENDAMENTO (
 -- Inserts de dados iniciais
 INSERT INTO TB_PERFIS (DESCRICAO) VALUES ('Administrador'), ('Tutor'), ('Funcionario');
 INSERT INTO TB_USUARIOS (EMAIL, SENHA, ATIVO, PERFIL_ID) VALUES ('admin', 'admin', 'S', 1);
+
 INSERT INTO TB_USUARIOS (EMAIL, SENHA, ATIVO, PERFIL_ID) VALUES ('cli', 'cli', 'S', 2);
+SET @usuario_id = LAST_INSERT_ID();
+INSERT INTO TB_TUTORES (NOME, CPF, TELEFONE, CEP, USUARIO_ID) VALUES ('Erick Oliveira', '821.106.890-72', '(11) 91234-4321', '01001-000', @usuario_id);
+SET @tutor_id = LAST_INSERT_ID();
+INSERT INTO TB_PETS (NOME, RACA, TAMANHO, PESO, DT_NASCIMENTO, OBS, OCORRENCIAS, TUTOR_ID) VALUES
+('Rex', 'Labrador', 3, 28.5, '2019-01-10', 'Adora brincar de buscar a bolinha.', '', @tutor_id),
+('Mia', 'Siamês', 2, 4.2, '2021-05-20', 'Um pouco arisca com estranhos.', '', @tutor_id);
+
+INSERT INTO TB_USUARIOS (EMAIL, SENHA, PERFIL_ID) VALUES ('func', 'func', 3);
+SET @usuario_id = LAST_INSERT_ID();
+INSERT INTO TB_FUNCIONARIOS (NOME, CPF, TELEFONE, CEP, CARGO, SALARIO, USUARIO_ID) VALUES ('João Ramos', '761.006.750-48', '(51) 98784-6655', '90010-300', 'Veterinário', 5000.00, @usuario_id);
 
 -- Inserindo os serviços padrão
 INSERT INTO TB_SERVICOS (DESCRICAO, VALOR) VALUES

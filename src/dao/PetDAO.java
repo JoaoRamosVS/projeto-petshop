@@ -9,7 +9,6 @@ import java.util.List;
 
 import database.DBConnection;
 import entities.Pet;
-import enums.TamanhoPetEnum;
 
 public class PetDAO {
 

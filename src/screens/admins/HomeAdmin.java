@@ -68,15 +68,6 @@ public class HomeAdmin extends JFrame {
         });
         menuGerenciar.add(itemGerenciarUsuarios);
         
-        JMenu menuOperacoes = new JMenu("Operações");
-        menuBar.add(menuOperacoes);
-        
-        JMenuItem itemAgenda = new JMenuItem("Agenda de Serviços");
-        menuOperacoes.add(itemAgenda);
-        
-        JMenuItem itemVenda = new JMenuItem("Nova Venda (PDV)");
-        menuOperacoes.add(itemVenda);
-        
         JMenuItem itemLogoff = new JMenuItem("Sair");
         itemLogoff.setForeground(Color.RED);
         itemLogoff.addActionListener(e -> {

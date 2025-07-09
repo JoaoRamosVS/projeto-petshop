@@ -104,7 +104,7 @@ public class CadastroInicial extends JFrame {
         addLabelAndField("Senha:", 410, txtSenha, 430, 480, 350);
         
         JButton btnSalvar = new JButton("Criar Conta");
-        btnSalvar.setBounds(380, 500, 120, 40);
+        btnSalvar.setBounds(380, 500, 150, 40);
         btnSalvar.setFont(new Font("Arial", Font.BOLD, 16));
         add(btnSalvar);
         

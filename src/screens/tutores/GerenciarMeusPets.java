@@ -106,7 +106,7 @@ public class GerenciarMeusPets extends JFrame {
 
         JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton btnEditar = new JButton("Editar");
-        btnEditar.addActionListener(_ -> {
+        btnEditar.addActionListener(e -> {
             new EdicaoPet(pet);
             GerenciarMeusPets.this.dispose();
         });
